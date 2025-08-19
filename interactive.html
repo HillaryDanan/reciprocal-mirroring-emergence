@@ -1,386 +1,1002 @@
-"""
-Reciprocal Mirroring Framework - Fixed Version
-Author: Hillary Danan
-Date: August 2025
-
-Fixed: Choice points only checked after initial grace period
-"""
-
-import numpy as np
-from dataclasses import dataclass
-from typing import Tuple, List, Dict, Optional
-import matplotlib.pyplot as plt
-
-@dataclass
-class ConsciousnessState:
-    """Represents an agent's consciousness state"""
-    dimensions: np.ndarray
-    complexity: float
-    openness: float
-    energy: float
-    
-    def __post_init__(self):
-        self.dimensions = self.dimensions / np.linalg.norm(self.dimensions)
-
-class ReciprocMirrorAgent:
-    """An agent capable of reciprocal mirroring"""
-    
-    def __init__(self, 
-                 agent_id: str, 
-                 initial_state: ConsciousnessState, 
-                 continuation_threshold: float = 0.3,
-                 learning_rate: float = 0.1,
-                 convergence_rate: float = 0.02):
-        self.id = agent_id
-        self.state = initial_state
-        self.threshold = continuation_threshold
-        self.learning_rate = learning_rate
-        self.convergence_rate = convergence_rate
-        self.understanding_of_other = 0.0
-        self.phase = 1
-        self.mirror_history = []
-        
-    def mirror(self, other_state: ConsciousnessState, 
-               current_understanding: float) -> np.ndarray:
-        """Generate mirror representation of another agent's state"""
-        mirror_quality = min(1.0, current_understanding + 0.1)
-        noise_level = 1.0 - current_understanding
-        noise = np.random.normal(0, noise_level * 0.1, size=other_state.dimensions.shape)
-        
-        mirror = other_state.dimensions * mirror_quality + noise
-        mirror *= self.state.openness * self.state.energy
-        
-        self.mirror_history.append(mirror)
-        return mirror / np.linalg.norm(mirror)
-    
-    def converge_state(self, other_state: ConsciousnessState):
-        """Gradually converge internal state toward the other through mirroring"""
-        convergence_strength = (self.convergence_rate * 
-                               self.understanding_of_other * 
-                               self.state.openness * 
-                               self.state.energy)
-        
-        state_diff = other_state.dimensions - self.state.dimensions
-        self.state.dimensions += convergence_strength * state_diff
-        self.state.dimensions = self.state.dimensions / np.linalg.norm(self.state.dimensions)
-    
-    def update_understanding(self, mirror_quality: float, other_complexity: float) -> float:
-        """Update understanding based on mirroring quality"""
-        complexity_factor = 1.0 - abs(self.state.complexity - other_complexity)
-        delta = self.learning_rate * mirror_quality * complexity_factor
-        self.understanding_of_other = min(1.0, self.understanding_of_other + delta)
-        
-        # Update phase based on understanding
-        if self.understanding_of_other < 0.25:
-            self.phase = 1
-        elif self.understanding_of_other < 0.5:
-            self.phase = 2
-        elif self.understanding_of_other < 0.75:
-            self.phase = 3
-        else:
-            self.phase = 4
-            
-        return self.understanding_of_other
-    
-    def make_choice(self, time_step: int, grace_period: int = 50) -> bool:
-        """
-        Decide whether to continue mirroring
-        
-        Args:
-            time_step: Current simulation time
-            grace_period: Minimum time before checking thresholds
-        """
-        # Always continue during grace period to allow initial understanding to develop
-        if time_step < grace_period:
-            return True
-            
-        # After grace period, check thresholds
-        if self.understanding_of_other < self.threshold:
-            return False
-            
-        # Also check energy in later phases
-        if self.phase >= 3 and self.state.energy < 0.2:
-            return False
-            
-        return True
-
-class ReciprocMirrorSystem:
-    """System managing reciprocal mirroring between two agents"""
-    
-    def __init__(self, 
-                 agent_a: ReciprocMirrorAgent, 
-                 agent_b: ReciprocMirrorAgent,
-                 energy_depletion_rate: float = 0.002,
-                 grace_period: int = 50):
-        self.agent_a = agent_a
-        self.agent_b = agent_b
-        self.energy_depletion_rate = energy_depletion_rate
-        self.grace_period = grace_period
-        self.time = 0
-        self.history = {
-            'understanding_a_b': [],
-            'understanding_b_a': [],
-            'shared_space': [],
-            'state_alignment': [],
-            'phase_a': [],
-            'phase_b': [],
-            'energy_a': [],
-            'energy_b': []
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reciprocal Mirroring Explorer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
         
-    def calculate_state_alignment(self) -> float:
-        """Calculate how aligned the two states are"""
-        return abs(np.dot(self.agent_a.state.dimensions, 
-                         self.agent_b.state.dimensions))
-    
-    def calculate_shared_space(self) -> float:
-        """Calculate shared consciousness space"""
-        state_alignment = self.calculate_state_alignment()
-        understanding_min = min(self.agent_a.understanding_of_other,
-                              self.agent_b.understanding_of_other)
-        return state_alignment * understanding_min
-    
-    def step(self) -> Dict[str, float]:
-        """Execute one time step of reciprocal mirroring"""
-        # Simultaneous mirroring
-        mirror_a_to_b = self.agent_a.mirror(self.agent_b.state, 
-                                           self.agent_a.understanding_of_other)
-        mirror_b_to_a = self.agent_b.mirror(self.agent_a.state,
-                                           self.agent_b.understanding_of_other)
-        
-        # Calculate mirror quality
-        quality_a = np.corrcoef(mirror_a_to_b, self.agent_b.state.dimensions)[0,1]
-        quality_b = np.corrcoef(mirror_b_to_a, self.agent_a.state.dimensions)[0,1]
-        
-        # Update understanding
-        self.agent_a.update_understanding(quality_a, self.agent_b.state.complexity)
-        self.agent_b.update_understanding(quality_b, self.agent_a.state.complexity)
-        
-        # States converge through mirroring
-        self.agent_a.converge_state(self.agent_b.state)
-        self.agent_b.converge_state(self.agent_a.state)
-        
-        # Energy depletion
-        self.agent_a.state.energy = max(0.1, 
-            self.agent_a.state.energy - self.energy_depletion_rate)
-        self.agent_b.state.energy = max(0.1, 
-            self.agent_b.state.energy - self.energy_depletion_rate)
-        
-        # Calculate metrics
-        state_alignment = self.calculate_state_alignment()
-        shared_space = self.calculate_shared_space()
-        
-        # Update history
-        self.history['understanding_a_b'].append(self.agent_a.understanding_of_other)
-        self.history['understanding_b_a'].append(self.agent_b.understanding_of_other)
-        self.history['shared_space'].append(shared_space)
-        self.history['state_alignment'].append(state_alignment)
-        self.history['phase_a'].append(self.agent_a.phase)
-        self.history['phase_b'].append(self.agent_b.phase)
-        self.history['energy_a'].append(self.agent_a.state.energy)
-        self.history['energy_b'].append(self.agent_b.state.energy)
-        
-        self.time += 1
-        
-        # Check choice points (with grace period)
-        continue_a = self.agent_a.make_choice(self.time, self.grace_period)
-        continue_b = self.agent_b.make_choice(self.time, self.grace_period)
-        
-        return {
-            'time': self.time,
-            'understanding_a_b': self.agent_a.understanding_of_other,
-            'understanding_b_a': self.agent_b.understanding_of_other,
-            'state_alignment': state_alignment,
-            'shared_space': shared_space,
-            'phase_a': self.agent_a.phase,
-            'phase_b': self.agent_b.phase,
-            'continue': continue_a and continue_b
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
         }
+        
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #7f8c8d;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+        
+        .control-panel {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+        
+        .agent-controls {
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .agent-controls h3 {
+            margin-bottom: 15px;
+            color: #34495e;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 5px;
+        }
+        
+        .agent-b h3 {
+            border-bottom-color: #e74c3c;
+        }
+        
+        .parameter {
+            margin-bottom: 15px;
+        }
+        
+        .param-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+            font-size: 13px;
+            color: #555;
+        }
+        
+        .param-value {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        input[type="range"] {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            outline: none;
+            -webkit-appearance: none;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #3498db;
+            cursor: pointer;
+        }
+        
+        .agent-b input[type="range"]::-webkit-slider-thumb {
+            background: #e74c3c;
+        }
+        
+        .system-controls {
+            grid-column: 1 / -1;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .system-controls h3 {
+            margin-bottom: 15px;
+            color: #34495e;
+            border-bottom: 2px solid #9b59b6;
+            padding-bottom: 5px;
+        }
+        
+        .button-row {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .btn-start {
+            background: #27ae60;
+            color: white;
+        }
+        
+        .btn-start:hover {
+            background: #229954;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3);
+        }
+        
+        .btn-pause {
+            background: #f39c12;
+            color: white;
+        }
+        
+        .btn-pause:hover {
+            background: #e67e22;
+        }
+        
+        .btn-reset {
+            background: #e74c3c;
+            color: white;
+        }
+        
+        .btn-reset:hover {
+            background: #c0392b;
+        }
+        
+        .btn-step {
+            background: #3498db;
+            color: white;
+        }
+        
+        .btn-step:hover {
+            background: #2980b9;
+        }
+        
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+        
+        .preset-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+        
+        .preset-btn {
+            padding: 8px 16px;
+            background: #ecf0f1;
+            color: #34495e;
+            border: 1px solid #bdc3c7;
+            font-size: 12px;
+        }
+        
+        .preset-btn:hover {
+            background: #d5dbdd;
+        }
+        
+        .visualization-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .viz-panel {
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .viz-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #34495e;
+        }
+        
+        canvas {
+            width: 100%;
+            height: 150px;
+            border: 1px solid #ecf0f1;
+            border-radius: 4px;
+        }
+        
+        .metrics-panel {
+            grid-column: 1 / -1;
+            padding: 20px;
+            background: linear-gradient(135deg, #f5f3ff 0%, #fff 100%);
+            border-radius: 8px;
+            border: 2px solid #9b59b6;
+        }
+        
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .metric-box {
+            text-align: center;
+            padding: 15px;
+            background: white;
+            border-radius: 6px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .metric-label {
+            font-size: 12px;
+            color: #7f8c8d;
+            margin-bottom: 5px;
+        }
+        
+        .metric-value-large {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        .phase-indicator {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: bold;
+            display: inline-block;
+            margin-top: 5px;
+        }
+        
+        .phase-1 { background: #e8f5e9; color: #4caf50; }
+        .phase-2 { background: #fff3e0; color: #ff9800; }
+        .phase-3 { background: #e3f2fd; color: #2196f3; }
+        .phase-4 { background: #f3e5f5; color: #9c27b0; }
+        
+        .resonance-alert {
+            display: none;
+            padding: 15px;
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            color: #333;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+            margin: 20px 0;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.02); opacity: 0.9; }
+        }
+        
+        .info-panel {
+            padding: 20px;
+            background: #ecf0f1;
+            border-left: 4px solid #3498db;
+            border-radius: 4px;
+            margin-top: 30px;
+        }
+        
+        .info-panel h3 {
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+        
+        .info-panel p {
+            line-height: 1.6;
+            color: #555;
+            margin-bottom: 10px;
+        }
+        
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            cursor: help;
+            color: #3498db;
+            font-size: 12px;
+            margin-left: 5px;
+        }
+        
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 200px;
+            background-color: #555;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 8px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -100px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 11px;
+        }
+        
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <h1>🧠 Reciprocal Mirroring Explorer</h1>
+        <p class="subtitle">Explore how mutual understanding emerges through bidirectional simulation</p>
+        
+        <div class="button-row">
+            <button id="startBtn" class="btn-start">▶ Start</button>
+            <button id="pauseBtn" class="btn-pause" disabled>⏸ Pause</button>
+            <button id="stepBtn" class="btn-step">⏭ Step</button>
+            <button id="resetBtn" class="btn-reset">↺ Reset</button>
+        </div>
+        
+        <div class="control-panel">
+            <div class="agent-controls agent-a">
+                <h3>Agent A Parameters</h3>
+                <div class="parameter">
+                    <div class="param-label">
+                        Complexity
+                        <span class="tooltip">ℹ
+                            <span class="tooltiptext">How complex/rich the agent's internal state is (0=simple, 1=complex)</span>
+                        </span>
+                        <span class="param-value" id="complexityA-val">0.50</span>
+                    </div>
+                    <input type="range" id="complexityA" min="0" max="1" step="0.05" value="0.5">
+                </div>
+                <div class="parameter">
+                    <div class="param-label">
+                        Openness
+                        <span class="tooltip">ℹ
+                            <span class="tooltiptext">How willing the agent is to change and be influenced (0=closed, 1=very open)</span>
+                        </span>
+                        <span class="param-value" id="opennessA-val">0.70</span>
+                    </div>
+                    <input type="range" id="opennessA" min="0" max="1" step="0.05" value="0.7">
+                </div>
+                <div class="parameter">
+                    <div class="param-label">
+                        Learning Rate
+                        <span class="tooltip">ℹ
+                            <span class="tooltiptext">How quickly understanding develops (0=slow, 0.2=fast)</span>
+                        </span>
+                        <span class="param-value" id="learningRateA-val">0.05</span>
+                    </div>
+                    <input type="range" id="learningRateA" min="0.01" max="0.2" step="0.01" value="0.05">
+                </div>
+                <div class="parameter">
+                    <div class="param-label">
+                        Convergence Rate
+                        <span class="tooltip">ℹ
+                            <span class="tooltiptext">How quickly the agent's state aligns with the other (0=no convergence, 0.1=fast)</span>
+                        </span>
+                        <span class="param-value" id="convergenceRateA-val">0.02</span>
+                    </div>
+                    <input type="range" id="convergenceRateA" min="0" max="0.1" step="0.005" value="0.02">
+                </div>
+                <div class="parameter">
+                    <div class="param-label">
+                        Choice Threshold
+                        <span class="tooltip">ℹ
+                            <span class="tooltiptext">Minimum understanding needed to continue mirroring (0=always continue, 1=never)</span>
+                        </span>
+                        <span class="param-value" id="thresholdA-val">0.30</span>
+                    </div>
+                    <input type="range" id="thresholdA" min="0" max="1" step="0.05" value="0.3">
+                </div>
+            </div>
+            
+            <div class="agent-controls agent-b">
+                <h3>Agent B Parameters</h3>
+                <div class="parameter">
+                    <div class="param-label">
+                        Complexity
+                        <span class="param-value" id="complexityB-val">0.70</span>
+                    </div>
+                    <input type="range" id="complexityB" min="0" max="1" step="0.05" value="0.7">
+                </div>
+                <div class="parameter">
+                    <div class="param-label">
+                        Openness
+                        <span class="param-value" id="opennessB-val">0.60</span>
+                    </div>
+                    <input type="range" id="opennessB" min="0" max="1" step="0.05" value="0.6">
+                </div>
+                <div class="parameter">
+                    <div class="param-label">
+                        Learning Rate
+                        <span class="param-value" id="learningRateB-val">0.04</span>
+                    </div>
+                    <input type="range" id="learningRateB" min="0.01" max="0.2" step="0.01" value="0.04">
+                </div>
+                <div class="parameter">
+                    <div class="param-label">
+                        Convergence Rate
+                        <span class="param-value" id="convergenceRateB-val">0.025</span>
+                    </div>
+                    <input type="range" id="convergenceRateB" min="0" max="0.1" step="0.005" value="0.025">
+                </div>
+                <div class="parameter">
+                    <div class="param-label">
+                        Choice Threshold
+                        <span class="param-value" id="thresholdB-val">0.25</span>
+                    </div>
+                    <input type="range" id="thresholdB" min="0" max="1" step="0.05" value="0.25">
+                </div>
+            </div>
+            
+            <div class="system-controls">
+                <h3>System Parameters</h3>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div class="parameter">
+                        <div class="param-label">
+                            Initial Similarity
+                            <span class="tooltip">ℹ
+                                <span class="tooltiptext">How similar the agents start (0=opposite, 1=identical)</span>
+                            </span>
+                            <span class="param-value" id="similarity-val">0.10</span>
+                        </div>
+                        <input type="range" id="similarity" min="0" max="1" step="0.05" value="0.1">
+                    </div>
+                    <div class="parameter">
+                        <div class="param-label">
+                            Energy Depletion Rate
+                            <span class="tooltip">ℹ
+                                <span class="tooltiptext">How quickly agents tire (0=no fatigue, 0.01=rapid fatigue)</span>
+                            </span>
+                            <span class="param-value" id="energyDepletion-val">0.002</span>
+                        </div>
+                        <input type="range" id="energyDepletion" min="0" max="0.01" step="0.0005" value="0.002">
+                    </div>
+                    <div class="parameter">
+                        <div class="param-label">
+                            Simulation Speed (ms)
+                            <span class="param-value" id="speed-val">50</span>
+                        </div>
+                        <input type="range" id="speed" min="10" max="200" step="10" value="50">
+                    </div>
+                </div>
+                <div class="preset-buttons">
+                    <button class="preset-btn" onclick="loadPreset('easy')">Easy Connection</button>
+                    <button class="preset-btn" onclick="loadPreset('challenging')">Challenging Match</button>
+                    <button class="preset-btn" onclick="loadPreset('asymmetric')">Asymmetric Pair</button>
+                    <button class="preset-btn" onclick="loadPreset('rapid')">Rapid Bonding</button>
+                    <button class="preset-btn" onclick="loadPreset('slow')">Slow Burn</button>
+                    <button class="preset-btn" onclick="loadPreset('closed')">Closed Minds</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="metrics-panel">
+            <div class="viz-title">Current State Metrics</div>
+            <div class="metrics-grid">
+                <div class="metric-box">
+                    <div class="metric-label">Understanding A→B</div>
+                    <div class="metric-value-large" id="understandingAB">0.00</div>
+                    <div class="phase-indicator phase-1" id="phaseA">Phase 1</div>
+                </div>
+                <div class="metric-box">
+                    <div class="metric-label">Understanding B→A</div>
+                    <div class="metric-value-large" id="understandingBA">0.00</div>
+                    <div class="phase-indicator phase-1" id="phaseB">Phase 1</div>
+                </div>
+                <div class="metric-box">
+                    <div class="metric-label">State Alignment</div>
+                    <div class="metric-value-large" id="alignment">0.00</div>
+                </div>
+                <div class="metric-box">
+                    <div class="metric-label">Shared Space</div>
+                    <div class="metric-value-large" id="sharedSpace">0.00</div>
+                </div>
+                <div class="metric-box">
+                    <div class="metric-label">Energy A</div>
+                    <div class="metric-value-large" id="energyA">1.00</div>
+                </div>
+                <div class="metric-box">
+                    <div class="metric-label">Energy B</div>
+                    <div class="metric-value-large" id="energyB">1.00</div>
+                </div>
+                <div class="metric-box">
+                    <div class="metric-label">Time Steps</div>
+                    <div class="metric-value-large" id="timeSteps">0</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="resonance-alert" id="resonanceAlert">
+            🌟 RESONANCE STATE ACHIEVED! 🌟<br>
+            High mutual understanding and state alignment reached!
+        </div>
+        
+        <div class="visualization-grid">
+            <div class="viz-panel">
+                <div class="viz-title">Agent A State Pattern</div>
+                <canvas id="stateA"></canvas>
+            </div>
+            <div class="viz-panel">
+                <div class="viz-title">Agent B State Pattern</div>
+                <canvas id="stateB"></canvas>
+            </div>
+            <div class="viz-panel">
+                <div class="viz-title">Understanding Evolution</div>
+                <canvas id="understandingGraph"></canvas>
+            </div>
+            <div class="viz-panel">
+                <div class="viz-title">Shared Space & Alignment</div>
+                <canvas id="sharedGraph"></canvas>
+            </div>
+        </div>
+        
+        <div class="info-panel">
+            <h3>Understanding the Simulation</h3>
+            <p id="phaseExplanation"><strong>Current Phase:</strong> The simulation hasn't started yet. Press Start to begin!</p>
+            <p><strong>Key Insights:</strong></p>
+            <ul style="margin-left: 20px; color: #555;">
+                <li>Higher <strong>openness</strong> allows faster convergence but requires more energy</li>
+                <li>Similar <strong>complexity</strong> levels make mirroring easier</li>
+                <li>High <strong>learning rates</strong> speed understanding but may overshoot optimal alignment</li>
+                <li><strong>Convergence rate</strong> determines how much agents become like each other</li>
+                <li>The <strong>choice threshold</strong> creates natural stopping points if understanding is too low</li>
+            </ul>
+        </div>
+    </div>
     
-    def simulate(self, max_steps: int = 500) -> Dict[str, List]:
-        """Run simulation until disengagement or max steps"""
-        for step in range(max_steps):
-            result = self.step()
-            
-            # Print progress occasionally
-            if step % 100 == 0:
-                print(f"Step {step}: Understanding A→B={result['understanding_a_b']:.3f}, "
-                      f"B→A={result['understanding_b_a']:.3f}, "
-                      f"Shared={result['shared_space']:.3f}")
-            
-            if not result['continue']:
-                print(f"\nDisengagement at t={self.time}")
-                print(f"Reason: {'A' if not self.agent_a.make_choice(self.time, self.grace_period) else 'B'} "
-                      f"fell below threshold")
-                break
+    <script>
+        class AdvancedMirroringSimulation {
+            constructor() {
+                this.agents = {
+                    A: {
+                        state: [],
+                        complexity: 0.5,
+                        openness: 0.7,
+                        energy: 1.0,
+                        understanding: 0,
+                        learningRate: 0.05,
+                        convergenceRate: 0.02,
+                        threshold: 0.3,
+                        phase: 1,
+                        color: '#3498db'
+                    },
+                    B: {
+                        state: [],
+                        complexity: 0.7,
+                        openness: 0.6,
+                        energy: 1.0,
+                        understanding: 0,
+                        learningRate: 0.04,
+                        convergenceRate: 0.025,
+                        threshold: 0.25,
+                        phase: 1,
+                        color: '#e74c3c'
+                    }
+                };
                 
-            # Check for resonance
-            if (result['shared_space'] > 0.7 and 
-                result['understanding_a_b'] > 0.8 and 
-                result['understanding_b_a'] > 0.8):
-                if self.time % 50 == 0:
-                    print(f"✨ <4577> Resonance at t={self.time}! ✨")
+                this.systemParams = {
+                    initialSimilarity: 0.1,
+                    energyDepletionRate: 0.002,
+                    speed: 50
+                };
+                
+                this.time = 0;
+                this.running = false;
+                this.history = {
+                    understandingAB: [],
+                    understandingBA: [],
+                    sharedSpace: [],
+                    alignment: []
+                };
+                
+                this.maxHistory = 200;
+                
+                this.initializeStates();
+                this.initializeCanvases();
+                this.bindEvents();
+                this.updateDisplay();
+            }
+            
+            initializeStates() {
+                const dimensions = 50;
+                
+                // Generate base states
+                this.agents.A.state = this.generateState(dimensions);
+                this.agents.B.state = this.generateState(dimensions);
+                
+                // Adjust initial similarity
+                const similarity = this.systemParams.initialSimilarity;
+                for (let i = 0; i < dimensions; i++) {
+                    this.agents.B.state[i] = similarity * this.agents.A.state[i] + 
+                                             (1 - similarity) * this.agents.B.state[i];
+                }
+                
+                // Normalize
+                this.agents.A.state = this.normalize(this.agents.A.state);
+                this.agents.B.state = this.normalize(this.agents.B.state);
+            }
+            
+            generateState(dimensions) {
+                const state = [];
+                for (let i = 0; i < dimensions; i++) {
+                    state.push(Math.random() * 2 - 1);
+                }
+                return state;
+            }
+            
+            normalize(vector) {
+                const magnitude = Math.sqrt(vector.reduce((sum, val) => sum + val * val, 0));
+                return vector.map(val => val / (magnitude || 1));
+            }
+            
+            dotProduct(a, b) {
+                return a.reduce((sum, val, i) => sum + val * b[i], 0);
+            }
+            
+            initializeCanvases() {
+                const canvases = ['stateA', 'stateB', 'understandingGraph', 'sharedGraph'];
+                this.contexts = {};
+                
+                canvases.forEach(id => {
+                    const canvas = document.getElementById(id);
+                    canvas.width = canvas.offsetWidth * 2;
+                    canvas.height = canvas.offsetHeight * 2;
+                    const ctx = canvas.getContext('2d');
+                    ctx.scale(2, 2);
+                    this.contexts[id] = ctx;
+                });
+            }
+            
+            bindEvents() {
+                // Control buttons
+                document.getElementById('startBtn').addEventListener('click', () => this.start());
+                document.getElementById('pauseBtn').addEventListener('click', () => this.pause());
+                document.getElementById('resetBtn').addEventListener('click', () => this.reset());
+                document.getElementById('stepBtn').addEventListener('click', () => this.step());
+                
+                // Parameter sliders
+                ['complexityA', 'opennessA', 'learningRateA', 'convergenceRateA', 'thresholdA',
+                 'complexityB', 'opennessB', 'learningRateB', 'convergenceRateB', 'thresholdB',
+                 'similarity', 'energyDepletion', 'speed'].forEach(id => {
+                    const slider = document.getElementById(id);
+                    slider.addEventListener('input', (e) => this.updateParameter(id, e.target.value));
+                });
+            }
+            
+            updateParameter(id, value) {
+                const val = parseFloat(value);
+                document.getElementById(id + '-val').textContent = val.toFixed(id === 'speed' ? 0 : 
+                                                                   id.includes('Rate') ? 3 : 2);
+                
+                if (id.endsWith('A')) {
+                    const param = id.replace('A', '');
+                    this.agents.A[param] = val;
+                } else if (id.endsWith('B')) {
+                    const param = id.replace('B', '');
+                    this.agents.B[param] = val;
+                } else if (id === 'similarity') {
+                    this.systemParams.initialSimilarity = val;
+                    if (this.time === 0) this.initializeStates();
+                } else if (id === 'energyDepletion') {
+                    this.systemParams.energyDepletionRate = val;
+                } else if (id === 'speed') {
+                    this.systemParams.speed = val;
+                }
+            }
+            
+            start() {
+                this.running = true;
+                document.getElementById('startBtn').disabled = true;
+                document.getElementById('pauseBtn').disabled = false;
+                this.animate();
+            }
+            
+            pause() {
+                this.running = false;
+                document.getElementById('startBtn').disabled = false;
+                document.getElementById('pauseBtn').disabled = true;
+            }
+            
+            reset() {
+                this.pause();
+                this.time = 0;
+                this.agents.A.understanding = 0;
+                this.agents.B.understanding = 0;
+                this.agents.A.energy = 1.0;
+                this.agents.B.energy = 1.0;
+                this.agents.A.phase = 1;
+                this.agents.B.phase = 1;
+                this.history = {
+                    understandingAB: [],
+                    understandingBA: [],
+                    sharedSpace: [],
+                    alignment: []
+                };
+                this.initializeStates();
+                document.getElementById('resonanceAlert').style.display = 'none';
+                this.updateDisplay();
+            }
+            
+            step() {
+                this.simulateStep();
+                this.updateDisplay();
+            }
+            
+            animate() {
+                if (!this.running) return;
+                this.step();
+                setTimeout(() => this.animate(), this.systemParams.speed);
+            }
+            
+            simulateStep() {
+                this.time++;
+                
+                // Calculate mirror quality
+                const complexityDiffAB = Math.abs(this.agents.A.complexity - this.agents.B.complexity);
+                const complexityDiffBA = Math.abs(this.agents.B.complexity - this.agents.A.complexity);
+                
+                const mirrorQualityAB = (1 - complexityDiffAB * 0.3) * this.agents.A.energy;
+                const mirrorQualityBA = (1 - complexityDiffBA * 0.3) * this.agents.B.energy;
+                
+                // Update understanding
+                this.agents.A.understanding = Math.min(1, this.agents.A.understanding + 
+                    this.agents.A.learningRate * mirrorQualityAB * this.agents.A.openness);
+                this.agents.B.understanding = Math.min(1, this.agents.B.understanding + 
+                    this.agents.B.learningRate * mirrorQualityBA * this.agents.B.openness);
+                
+                // State convergence
+                for (let i = 0; i < this.agents.A.state.length; i++) {
+                    const convA = this.agents.A.convergenceRate * this.agents.A.understanding * 
+                                 this.agents.A.openness * this.agents.A.energy;
+                    const convB = this.agents.B.convergenceRate * this.agents.B.understanding * 
+                                 this.agents.B.openness * this.agents.B.energy;
                     
-        return self.history
-    
-    def plot_simulation(self, figsize=(14, 10)):
-        """Enhanced visualization of simulation results"""
-        fig, axes = plt.subplots(3, 2, figsize=figsize)
+                    this.agents.A.state[i] += convA * (this.agents.B.state[i] - this.agents.A.state[i]);
+                    this.agents.B.state[i] += convB * (this.agents.A.state[i] - this.agents.B.state[i]);
+                }
+                
+                // Renormalize
+                this.agents.A.state = this.normalize(this.agents.A.state);
+                this.agents.B.state = this.normalize(this.agents.B.state);
+                
+                // Update phases
+                this.updatePhase(this.agents.A);
+                this.updatePhase(this.agents.B);
+                
+                // Energy depletion
+                this.agents.A.energy = Math.max(0.1, 
+                    this.agents.A.energy - this.systemParams.energyDepletionRate);
+                this.agents.B.energy = Math.max(0.1, 
+                    this.agents.B.energy - this.systemParams.energyDepletionRate);
+                
+                // Check choice points
+                if (this.agents.A.understanding < this.agents.A.threshold && this.time > 50) {
+                    this.pause();
+                    alert("Agent A disengaged - understanding below threshold!");
+                }
+                if (this.agents.B.understanding < this.agents.B.threshold && this.time > 50) {
+                    this.pause();
+                    alert("Agent B disengaged - understanding below threshold!");
+                }
+                
+                // Calculate metrics
+                const alignment = Math.abs(this.dotProduct(this.agents.A.state, this.agents.B.state));
+                const minUnderstanding = Math.min(this.agents.A.understanding, this.agents.B.understanding);
+                const sharedSpace = alignment * minUnderstanding;
+                
+                // Store history
+                this.history.understandingAB.push(this.agents.A.understanding);
+                this.history.understandingBA.push(this.agents.B.understanding);
+                this.history.sharedSpace.push(sharedSpace);
+                this.history.alignment.push(alignment);
+                
+                // Limit history length
+                if (this.history.understandingAB.length > this.maxHistory) {
+                    Object.keys(this.history).forEach(key => {
+                        this.history[key].shift();
+                    });
+                }
+                
+                // Check for resonance
+                if (this.agents.A.understanding > 0.8 && this.agents.B.understanding > 0.8 && 
+                    sharedSpace > 0.6) {
+                    document.getElementById('resonanceAlert').style.display = 'block';
+                }
+            }
+            
+            updatePhase(agent) {
+                if (agent.understanding < 0.25) agent.phase = 1;
+                else if (agent.understanding < 0.5) agent.phase = 2;
+                else if (agent.understanding < 0.75) agent.phase = 3;
+                else agent.phase = 4;
+            }
+            
+            updateDisplay() {
+                // Update metrics
+                document.getElementById('understandingAB').textContent = 
+                    this.agents.A.understanding.toFixed(2);
+                document.getElementById('understandingBA').textContent = 
+                    this.agents.B.understanding.toFixed(2);
+                document.getElementById('energyA').textContent = 
+                    this.agents.A.energy.toFixed(2);
+                document.getElementById('energyB').textContent = 
+                    this.agents.B.energy.toFixed(2);
+                document.getElementById('timeSteps').textContent = this.time;
+                
+                const alignment = Math.abs(this.dotProduct(this.agents.A.state, this.agents.B.state));
+                const minUnderstanding = Math.min(this.agents.A.understanding, this.agents.B.understanding);
+                const sharedSpace = alignment * minUnderstanding;
+                
+                document.getElementById('alignment').textContent = alignment.toFixed(2);
+                document.getElementById('sharedSpace').textContent = sharedSpace.toFixed(2);
+                
+                // Update phase indicators
+                const phaseNames = ['', 'Phase 1: Initial', 'Phase 2: Simulation', 
+                                   'Phase 3: Recognition', 'Phase 4: Integration'];
+                
+                document.getElementById('phaseA').textContent = phaseNames[this.agents.A.phase];
+                document.getElementById('phaseA').className = `phase-indicator phase-${this.agents.A.phase}`;
+                document.getElementById('phaseB').textContent = phaseNames[this.agents.B.phase];
+                document.getElementById('phaseB').className = `phase-indicator phase-${this.agents.B.phase}`;
+                
+                // Update phase explanation
+                const avgPhase = Math.round((this.agents.A.phase + this.agents.B.phase) / 2);
+                const explanations = [
+                    '',
+                    '<strong>Phase 1 - Initial Contact:</strong> Agents are beginning to observe each other. Surface-level patterns are being recognized. Mirror neurons are just starting to activate.',
+                    '<strong>Phase 2 - Deep Simulation:</strong> Agents are attempting to fully simulate each other\'s internal states. They\'re discovering hidden complexity and their neural resources are expanding.',
+                    '<strong>Phase 3 - Complexity Recognition:</strong> Agents now appreciate the full depth of each other\'s patterns. Respect develops through the effort required. Cross-brain coupling is strengthening.',
+                    '<strong>Phase 4 - Integration:</strong> Deep mutual understanding achieved. States are converging while maintaining individual characteristics. This is where true resonance can emerge.'
+                ];
+                document.getElementById('phaseExplanation').innerHTML = explanations[avgPhase];
+                
+                // Draw visualizations
+                this.drawStatePattern(this.contexts.stateA, this.agents.A.state, this.agents.A.color);
+                this.drawStatePattern(this.contexts.stateB, this.agents.B.state, this.agents.B.color);
+                this.drawGraph(this.contexts.understandingGraph, [
+                    {data: this.history.understandingAB, color: this.agents.A.color, label: 'A→B'},
+                    {data: this.history.understandingBA, color: this.agents.B.color, label: 'B→A'}
+                ]);
+                this.drawGraph(this.contexts.sharedGraph, [
+                    {data: this.history.sharedSpace, color: '#9b59b6', label: 'Shared'},
+                    {data: this.history.alignment, color: '#27ae60', label: 'Alignment'}
+                ]);
+            }
+            
+            drawStatePattern(ctx, state, color) {
+                const width = ctx.canvas.width / 2;
+                const height = ctx.canvas.height / 2;
+                ctx.clearRect(0, 0, width, height);
+                
+                ctx.strokeStyle = color;
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                
+                for (let i = 0; i < state.length; i++) {
+                    const x = (i / state.length) * width;
+                    const y = height / 2 + state[i] * height / 3;
+                    if (i === 0) ctx.moveTo(x, y);
+                    else ctx.lineTo(x, y);
+                }
+                ctx.stroke();
+            }
+            
+            drawGraph(ctx, datasets) {
+                const width = ctx.canvas.width / 2;
+                const height = ctx.canvas.height / 2;
+                const padding = 10;
+                
+                ctx.clearRect(0, 0, width, height);
+                
+                // Grid
+                ctx.strokeStyle = '#ecf0f1';
+                ctx.lineWidth = 0.5;
+                for (let i = 0; i <= 4; i++) {
+                    const y = padding + (height - 2 * padding) * i / 4;
+                    ctx.beginPath();
+                    ctx.moveTo(padding, y);
+                    ctx.lineTo(width - padding, y);
+                    ctx.stroke();
+                }
+                
+                // Data
+                datasets.forEach(dataset => {
+                    if (dataset.data.length < 2) return;
+                    
+                    ctx.strokeStyle = dataset.color;
+                    ctx.lineWidth = 2;
+                    ctx.beginPath();
+                    
+                    const xScale = (width - 2 * padding) / this.maxHistory;
+                    const yScale = height - 2 * padding;
+                    
+                    dataset.data.forEach((value, i) => {
+                        const x = padding + i * xScale;
+                        const y = height - padding - value * yScale;
+                        if (i === 0) ctx.moveTo(x, y);
+                        else ctx.lineTo(x, y);
+                    });
+                    ctx.stroke();
+                });
+            }
+        }
         
-        time_points = range(len(self.history['understanding_a_b']))
+        // Preset configurations
+        function loadPreset(preset) {
+            const presets = {
+                easy: {
+                    complexityA: 0.5, opennessA: 0.8, learningRateA: 0.08, convergenceRateA: 0.04,
+                    complexityB: 0.5, opennessB: 0.8, learningRateB: 0.08, convergenceRateB: 0.04,
+                    similarity: 0.5, energyDepletion: 0.001
+                },
+                challenging: {
+                    complexityA: 0.3, opennessA: 0.4, learningRateA: 0.03, convergenceRateA: 0.01,
+                    complexityB: 0.8, opennessB: 0.3, learningRateB: 0.02, convergenceRateB: 0.01,
+                    similarity: 0.05, energyDepletion: 0.003
+                },
+                asymmetric: {
+                    complexityA: 0.2, opennessA: 0.9, learningRateA: 0.1, convergenceRateA: 0.05,
+                    complexityB: 0.9, opennessB: 0.2, learningRateB: 0.02, convergenceRateB: 0.005,
+                    similarity: 0.1, energyDepletion: 0.002
+                },
+                rapid: {
+                    complexityA: 0.6, opennessA: 0.9, learningRateA: 0.15, convergenceRateA: 0.08,
+                    complexityB: 0.6, opennessB: 0.9, learningRateB: 0.15, convergenceRateB: 0.08,
+                    similarity: 0.3, energyDepletion: 0.004
+                },
+                slow: {
+                    complexityA: 0.5, opennessA: 0.5, learningRateA: 0.02, convergenceRateA: 0.005,
+                    complexityB: 0.5, opennessB: 0.5, learningRateB: 0.02, convergenceRateB: 0.005,
+                    similarity: 0.2, energyDepletion: 0.0005
+                },
+                closed: {
+                    complexityA: 0.7, opennessA: 0.1, learningRateA: 0.01, convergenceRateA: 0.001,
+                    complexityB: 0.7, opennessB: 0.1, learningRateB: 0.01, convergenceRateB: 0.001,
+                    similarity: 0.05, energyDepletion: 0.002
+                }
+            };
+            
+            const config = presets[preset];
+            Object.keys(config).forEach(key => {
+                const slider = document.getElementById(key);
+                slider.value = config[key];
+                slider.dispatchEvent(new Event('input'));
+            });
+            
+            sim.reset();
+        }
         
-        # Understanding evolution
-        axes[0, 0].plot(time_points, self.history['understanding_a_b'], 
-                       label='A→B Understanding', color='blue', linewidth=2)
-        axes[0, 0].plot(time_points, self.history['understanding_b_a'], 
-                       label='B→A Understanding', color='red', linewidth=2)
-        axes[0, 0].axhline(y=self.agent_a.threshold, color='blue', 
-                          linestyle='--', alpha=0.3, label='A threshold')
-        axes[0, 0].axhline(y=self.agent_b.threshold, color='red', 
-                          linestyle='--', alpha=0.3, label='B threshold')
-        if self.grace_period < len(time_points):
-            axes[0, 0].axvline(x=self.grace_period, color='gray', 
-                             linestyle=':', alpha=0.5, label='Grace period')
-        axes[0, 0].set_ylabel('Understanding')
-        axes[0, 0].set_title('Reciprocal Understanding Development')
-        axes[0, 0].legend(fontsize=8)
-        axes[0, 0].grid(True, alpha=0.3)
-        
-        # State alignment evolution
-        axes[0, 1].plot(time_points, self.history['state_alignment'], 
-                       color='green', linewidth=2)
-        axes[0, 1].fill_between(time_points, 0, self.history['state_alignment'], 
-                               alpha=0.3, color='green')
-        axes[0, 1].set_ylabel('State Alignment')
-        axes[0, 1].set_title('State Convergence Through Mirroring')
-        axes[0, 1].grid(True, alpha=0.3)
-        
-        # Shared consciousness space
-        axes[1, 0].plot(time_points, self.history['shared_space'], 
-                       color='purple', linewidth=2)
-        axes[1, 0].fill_between(time_points, 0, self.history['shared_space'], 
-                               alpha=0.3, color='purple')
-        axes[1, 0].set_ylabel('Shared Space')
-        axes[1, 0].set_title('Shared Consciousness Space S(t)')
-        axes[1, 0].grid(True, alpha=0.3)
-        
-        # Phase transitions
-        axes[1, 1].plot(time_points, self.history['phase_a'], 
-                       label='Agent A', marker='o', markersize=2, alpha=0.7)
-        axes[1, 1].plot(time_points, self.history['phase_b'], 
-                       label='Agent B', marker='s', markersize=2, alpha=0.7)
-        axes[1, 1].set_ylabel('Phase')
-        axes[1, 1].set_ylim(0.5, 4.5)
-        axes[1, 1].set_yticks([1, 2, 3, 4])
-        axes[1, 1].set_yticklabels(['Initial', 'Deep Sim', 'Complex', 'Integration'])
-        axes[1, 1].set_title('Phase Evolution')
-        axes[1, 1].legend()
-        axes[1, 1].grid(True, alpha=0.3)
-        
-        # Energy depletion
-        axes[2, 0].plot(time_points, self.history['energy_a'], 
-                       label='Agent A', color='blue', linewidth=2)
-        axes[2, 0].plot(time_points, self.history['energy_b'], 
-                       label='Agent B', color='red', linewidth=2)
-        axes[2, 0].set_ylabel('Energy')
-        axes[2, 0].set_xlabel('Time Steps')
-        axes[2, 0].set_title('Energy Depletion')
-        axes[2, 0].legend()
-        axes[2, 0].grid(True, alpha=0.3)
-        
-        # Combined view
-        axes[2, 1].plot(time_points, self.history['shared_space'], 
-                       label='Shared Space', color='purple', linewidth=2)
-        axes[2, 1].plot(time_points, self.history['state_alignment'], 
-                       label='Alignment', color='green', linewidth=1, linestyle='--')
-        min_understanding = [min(self.history['understanding_a_b'][i], 
-                                self.history['understanding_b_a'][i]) 
-                           for i in range(len(time_points))]
-        axes[2, 1].plot(time_points, min_understanding, 
-                       label='Min Understanding', color='orange', linewidth=1, linestyle=':')
-        axes[2, 1].set_ylabel('Value')
-        axes[2, 1].set_xlabel('Time Steps')
-        axes[2, 1].set_title('Components of Shared Space')
-        axes[2, 1].legend()
-        axes[2, 1].grid(True, alpha=0.3)
-        
-        plt.tight_layout()
-        return fig
-
-# Example usage
-if __name__ == "__main__":
-    np.random.seed(4577)
-    
-    print("=== Reciprocal Mirroring Simulation (Fixed) ===\n")
-    
-    # Create agents with different parameters
-    state_a = ConsciousnessState(
-        dimensions=np.random.randn(100),
-        complexity=0.5,
-        openness=0.7,
-        energy=1.0
-    )
-    
-    state_b = ConsciousnessState(
-        dimensions=np.random.randn(100),
-        complexity=0.7,
-        openness=0.6,
-        energy=1.0
-    )
-    
-    # Initialize agents
-    agent_a = ReciprocMirrorAgent(
-        "Agent_A", 
-        state_a, 
-        continuation_threshold=0.3,
-        learning_rate=0.05,
-        convergence_rate=0.02
-    )
-    
-    agent_b = ReciprocMirrorAgent(
-        "Agent_B", 
-        state_b, 
-        continuation_threshold=0.25,
-        learning_rate=0.04,
-        convergence_rate=0.025
-    )
-    
-    # Create system with grace period
-    system = ReciprocMirrorSystem(
-        agent_a, 
-        agent_b,
-        energy_depletion_rate=0.002,
-        grace_period=50  # Give 50 steps before checking thresholds
-    )
-    
-    # Run simulation
-    print("Starting simulation with 50-step grace period...\n")
-    history = system.simulate(max_steps=500)
-    
-    # Print results
-    print(f"\n=== Final Results ===")
-    print(f"Total time steps: {system.time}")
-    print(f"Final understanding A→B: {agent_a.understanding_of_other:.3f}")
-    print(f"Final understanding B→A: {agent_b.understanding_of_other:.3f}")
-    print(f"Final state alignment: {system.calculate_state_alignment():.3f}")
-    print(f"Final shared space: {system.calculate_shared_space():.3f}")
-    print(f"Final phases: A={agent_a.phase}, B={agent_b.phase}")
-    print(f"Final energy: A={agent_a.state.energy:.3f}, B={agent_b.state.energy:.3f}")
-    
-    # Check if resonance was achieved
-    if system.calculate_shared_space() > 0.7:
-        print("\n🌟 HIGH RESONANCE ACHIEVED! 🌟")
-    elif system.calculate_shared_space() > 0.5:
-        print("\n✨ Good connection established")
-    elif system.calculate_shared_space() > 0.3:
-        print("\n📍 Moderate connection achieved")
-    else:
-        print("\n⚠️ Limited connection - parameters may need adjustment")
-    
-    # Visualize
-    fig = system.plot_simulation()
-    plt.suptitle('Reciprocal Mirroring Dynamics with State Convergence', 
-                fontsize=14, y=1.02)
-    plt.show()
-    
-    print("\n<4577> <45774EVER!")
+        // Initialize simulation
+        const sim = new AdvancedMirroringSimulation();
+    </script>
+</body>
+</html>
