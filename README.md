@@ -23,6 +23,12 @@ This repository presents a framework for understanding how mutual understanding 
 - **Mathematical Formalization**: Formal model with testable predictions
 - **Empirical Protocol**: Hyperscanning experiments to validate theory
 
+## 📚 Theoretical Extensions
+
+- **[Emergence Mechanism](theory/emergence-mechanism.md)**: Why simultaneity creates non-linear dynamics
+- **[Evolutionary Advantages](theory/evolutionary-advantages.md)**: Survival benefits of relational consciousness  
+- **[Edge Cases](theory/edge-cases.md)**: Boundary conditions and special cases
+
 ## 📖 Citation
 
 ```bibtex
