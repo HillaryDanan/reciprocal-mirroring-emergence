@@ -1,3 +1,10 @@
+<div align="center">
+  
+# Reciprocal Mirroring Emergence
+
+### [🎮 **PLAY WITH LIVE DEMO** 🎮](https://hillarydanan.github.io/reciprocal-mirroring-emergence/interactive.html)
+
+</div>
 # Reciprocal Mirroring Emergence
 
 > Framework for understanding bidirectional simulation and iterative choice points in intersubjective awareness
@@ -9,6 +16,17 @@
 This repository presents a framework proposing that mutual understanding emerges from reciprocal mirroring between agents through sustained bidirectional simulation processes.
 
 When Agent A observes Agent B, both agents simultaneously mirror each other, creating feedback loops with critical choice points.
+
+## 🚀 Try It Now!
+
+### [**LIVE INTERACTIVE DEMO →**](https://hillarydanan.github.io/reciprocal-mirroring-emergence/interactive.html)
+
+No installation needed! Explore how consciousness emerges through reciprocal mirroring:
+- 🎛️ Adjust 15+ parameters in real-time
+- 📊 Watch agent behavior evolve over time
+- 🎭 Try 6 preset scenarios
+
+**[Launch Interactive Explorer](https://hillarydanan.github.io/reciprocal-mirroring-emergence/interactive.html)** ← Click to start exploring!
 
 ## Documentation
 
