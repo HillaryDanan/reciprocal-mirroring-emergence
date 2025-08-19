@@ -1,15 +1,14 @@
 <div align="center">
-  
-# Reciprocal Mirroring Emergence
 
 ### [🎮 **PLAY WITH LIVE DEMO** 🎮](https://hillarydanan.github.io/reciprocal-mirroring-emergence/interactive.html)
 
 </div>
-# Reciprocal Mirroring Emergence
-
-> Framework for understanding bidirectional simulation and iterative choice points in intersubjective awareness
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+## Reciprocal Mirroring Emergence
+
+> Framework for understanding bidirectional simulation and iterative choice points in intersubjective awareness
 
 ## Overview
 
