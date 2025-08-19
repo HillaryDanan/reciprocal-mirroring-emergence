@@ -416,6 +416,16 @@
                     </div>
                     <input type="range" id="thresholdA" min="0" max="1" step="0.05" value="0.3">
                 </div>
+                <div class="parameter">
+                    <div class="param-label">
+                        Initial Trust
+                        <span class="tooltip">ℹ
+                            <span class="tooltiptext">Trust complements understanding - separate dimensions that interact (0=low, 1=high)</span>
+                        </span>
+                        <span class="param-value" id="trustA-val">0.50</span>
+                    </div>
+                    <input type="range" id="trustA" min="0.2" max="0.8" step="0.05" value="0.5">
+                </div>
             </div>
             
             <div class="agent-controls agent-b">
@@ -454,6 +464,16 @@
                         <span class="param-value" id="thresholdB-val">0.25</span>
                     </div>
                     <input type="range" id="thresholdB" min="0" max="1" step="0.05" value="0.25">
+                </div>
+                <div class="parameter">
+                    <div class="param-label">
+                        Initial Trust
+                        <span class="tooltip">ℹ
+                            <span class="tooltiptext">Trust complements understanding - separate dimensions that interact (0=low, 1=high)</span>
+                        </span>
+                        <span class="param-value" id="trustB-val">0.50</span>
+                    </div>
+                    <input type="range" id="trustB" min="0.2" max="0.8" step="0.05" value="0.5">
                 </div>
             </div>
             
@@ -521,6 +541,10 @@
                     <div class="metric-value-large" id="sharedSpace">0.00</div>
                 </div>
                 <div class="metric-box">
+                    <div class="metric-label">Trust Harmony</div>
+                    <div class="metric-value-large" id="trustHarmony">0.50</div>
+                </div>
+                <div class="metric-box">
                     <div class="metric-label">Energy A</div>
                     <div class="metric-value-large" id="energyA">1.00</div>
                 </div>
@@ -569,6 +593,7 @@
                 <li>High <strong>learning rates</strong> speed understanding but may overshoot optimal alignment</li>
                 <li><strong>Convergence rate</strong> determines how much agents become like each other</li>
                 <li>The <strong>choice threshold</strong> creates natural stopping points if understanding is too low</li>
+                <li><strong>Trust</strong> is a separate dimension that gently modulates mirror quality and convergence</li>
             </ul>
         </div>
     </div>
@@ -587,7 +612,8 @@
                         convergenceRate: 0.02,
                         threshold: 0.3,
                         phase: 1,
-                        color: '#3498db'
+                        color: '#3498db',
+                        trust: 0.5  // NEW: gentle trust addition
                     },
                     B: {
                         state: [],
@@ -599,7 +625,8 @@
                         convergenceRate: 0.025,
                         threshold: 0.25,
                         phase: 1,
-                        color: '#e74c3c'
+                        color: '#e74c3c',
+                        trust: 0.5  // NEW: gentle trust addition
                     }
                 };
                 
@@ -615,7 +642,9 @@
                     understandingAB: [],
                     understandingBA: [],
                     sharedSpace: [],
-                    alignment: []
+                    alignment: [],
+                    trustA: [],  // NEW: trust history
+                    trustB: []   // NEW: trust history
                 };
                 
                 this.maxHistory = 200;
@@ -683,9 +712,9 @@
                 document.getElementById('resetBtn').addEventListener('click', () => this.reset());
                 document.getElementById('stepBtn').addEventListener('click', () => this.step());
                 
-                // Parameter sliders
-                ['complexityA', 'opennessA', 'learningRateA', 'convergenceRateA', 'thresholdA',
-                 'complexityB', 'opennessB', 'learningRateB', 'convergenceRateB', 'thresholdB',
+                // Parameter sliders - including new trust parameters
+                ['complexityA', 'opennessA', 'learningRateA', 'convergenceRateA', 'thresholdA', 'trustA',
+                 'complexityB', 'opennessB', 'learningRateB', 'convergenceRateB', 'thresholdB', 'trustB',
                  'similarity', 'energyDepletion', 'speed'].forEach(id => {
                     const slider = document.getElementById(id);
                     slider.addEventListener('input', (e) => this.updateParameter(id, e.target.value));
@@ -735,11 +764,16 @@
                 this.agents.B.energy = 1.0;
                 this.agents.A.phase = 1;
                 this.agents.B.phase = 1;
+                // Reset trust to initial values from sliders
+                this.agents.A.trust = parseFloat(document.getElementById('trustA').value);
+                this.agents.B.trust = parseFloat(document.getElementById('trustB').value);
                 this.history = {
                     understandingAB: [],
                     understandingBA: [],
                     sharedSpace: [],
-                    alignment: []
+                    alignment: [],
+                    trustA: [],
+                    trustB: []
                 };
                 this.initializeStates();
                 document.getElementById('resonanceAlert').style.display = 'none';
@@ -767,11 +801,26 @@
                 const mirrorQualityAB = (1 - complexityDiffAB * 0.3) * this.agents.A.energy;
                 const mirrorQualityBA = (1 - complexityDiffBA * 0.3) * this.agents.B.energy;
                 
+                // Calculate shared space BEFORE updating understanding (needed for trust update)
+                const alignment = Math.abs(this.dotProduct(this.agents.A.state, this.agents.B.state));
+                const minUnderstanding = Math.min(this.agents.A.understanding, this.agents.B.understanding);
+                
+                // Calculate trust factor for shared space
+                const trustFactor = Math.sqrt(this.agents.A.trust * this.agents.B.trust);
+                const sharedSpace = alignment * minUnderstanding * (0.7 + 0.3 * trustFactor);
+                
                 // Update understanding
                 this.agents.A.understanding = Math.min(1, this.agents.A.understanding + 
                     this.agents.A.learningRate * mirrorQualityAB * this.agents.A.openness);
                 this.agents.B.understanding = Math.min(1, this.agents.B.understanding + 
                     this.agents.B.learningRate * mirrorQualityBA * this.agents.B.openness);
+                
+                // Gentle trust update
+                const interactionQuality = (mirrorQualityAB + mirrorQualityBA) / 2 + sharedSpace;
+                this.agents.A.trust = 0.9 * this.agents.A.trust + 0.1 * (0.5 + 0.2 * interactionQuality);
+                this.agents.B.trust = 0.9 * this.agents.B.trust + 0.1 * (0.5 + 0.2 * interactionQuality);
+                this.agents.A.trust = Math.max(0.2, Math.min(0.8, this.agents.A.trust));
+                this.agents.B.trust = Math.max(0.2, Math.min(0.8, this.agents.B.trust));
                 
                 // State convergence
                 for (let i = 0; i < this.agents.A.state.length; i++) {
@@ -808,16 +857,13 @@
                     alert("Agent B disengaged - understanding below threshold!");
                 }
                 
-                // Calculate metrics
-                const alignment = Math.abs(this.dotProduct(this.agents.A.state, this.agents.B.state));
-                const minUnderstanding = Math.min(this.agents.A.understanding, this.agents.B.understanding);
-                const sharedSpace = alignment * minUnderstanding;
-                
                 // Store history
                 this.history.understandingAB.push(this.agents.A.understanding);
                 this.history.understandingBA.push(this.agents.B.understanding);
                 this.history.sharedSpace.push(sharedSpace);
                 this.history.alignment.push(alignment);
+                this.history.trustA.push(this.agents.A.trust);
+                this.history.trustB.push(this.agents.B.trust);
                 
                 // Limit history length
                 if (this.history.understandingAB.length > this.maxHistory) {
@@ -854,10 +900,15 @@
                 
                 const alignment = Math.abs(this.dotProduct(this.agents.A.state, this.agents.B.state));
                 const minUnderstanding = Math.min(this.agents.A.understanding, this.agents.B.understanding);
-                const sharedSpace = alignment * minUnderstanding;
+                const trustFactor = Math.sqrt(this.agents.A.trust * this.agents.B.trust);
+                const sharedSpace = alignment * minUnderstanding * (0.7 + 0.3 * trustFactor);
                 
                 document.getElementById('alignment').textContent = alignment.toFixed(2);
                 document.getElementById('sharedSpace').textContent = sharedSpace.toFixed(2);
+                
+                // Update trust harmony
+                const trustHarmony = 1 - Math.abs(this.agents.A.trust - this.agents.B.trust);
+                document.getElementById('trustHarmony').textContent = trustHarmony.toFixed(2);
                 
                 // Update phase indicators
                 const phaseNames = ['', 'Phase 1: Initial', 'Phase 2: Simulation', 
@@ -884,7 +935,9 @@
                 this.drawStatePattern(this.contexts.stateB, this.agents.B.state, this.agents.B.color);
                 this.drawGraph(this.contexts.understandingGraph, [
                     {data: this.history.understandingAB, color: this.agents.A.color, label: 'A→B'},
-                    {data: this.history.understandingBA, color: this.agents.B.color, label: 'B→A'}
+                    {data: this.history.understandingBA, color: this.agents.B.color, label: 'B→A'},
+                    {data: this.history.trustA, color: this.agents.A.color, label: 'Trust A', dotted: true},
+                    {data: this.history.trustB, color: this.agents.B.color, label: 'Trust B', dotted: true}
                 ]);
                 this.drawGraph(this.contexts.sharedGraph, [
                     {data: this.history.sharedSpace, color: '#9b59b6', label: 'Shared'},
@@ -934,6 +987,15 @@
                     
                     ctx.strokeStyle = dataset.color;
                     ctx.lineWidth = 2;
+                    
+                    // Apply dotted style for trust lines
+                    if (dataset.dotted) {
+                        ctx.setLineDash([5, 5]);
+                        ctx.lineWidth = 1;
+                    } else {
+                        ctx.setLineDash([]);
+                    }
+                    
                     ctx.beginPath();
                     
                     const xScale = (width - 2 * padding) / this.maxHistory;
@@ -946,6 +1008,7 @@
                         else ctx.lineTo(x, y);
                     });
                     ctx.stroke();
+                    ctx.setLineDash([]); // Reset line dash
                 });
             }
         }
@@ -954,33 +1017,33 @@
         function loadPreset(preset) {
             const presets = {
                 easy: {
-                    complexityA: 0.5, opennessA: 0.8, learningRateA: 0.08, convergenceRateA: 0.04,
-                    complexityB: 0.5, opennessB: 0.8, learningRateB: 0.08, convergenceRateB: 0.04,
+                    complexityA: 0.5, opennessA: 0.8, learningRateA: 0.08, convergenceRateA: 0.04, trustA: 0.6,
+                    complexityB: 0.5, opennessB: 0.8, learningRateB: 0.08, convergenceRateB: 0.04, trustB: 0.6,
                     similarity: 0.5, energyDepletion: 0.001
                 },
                 challenging: {
-                    complexityA: 0.3, opennessA: 0.4, learningRateA: 0.03, convergenceRateA: 0.01,
-                    complexityB: 0.8, opennessB: 0.3, learningRateB: 0.02, convergenceRateB: 0.01,
+                    complexityA: 0.3, opennessA: 0.4, learningRateA: 0.03, convergenceRateA: 0.01, trustA: 0.4,
+                    complexityB: 0.8, opennessB: 0.3, learningRateB: 0.02, convergenceRateB: 0.01, trustB: 0.3,
                     similarity: 0.05, energyDepletion: 0.003
                 },
                 asymmetric: {
-                    complexityA: 0.2, opennessA: 0.9, learningRateA: 0.1, convergenceRateA: 0.05,
-                    complexityB: 0.9, opennessB: 0.2, learningRateB: 0.02, convergenceRateB: 0.005,
+                    complexityA: 0.2, opennessA: 0.9, learningRateA: 0.1, convergenceRateA: 0.05, trustA: 0.7,
+                    complexityB: 0.9, opennessB: 0.2, learningRateB: 0.02, convergenceRateB: 0.005, trustB: 0.3,
                     similarity: 0.1, energyDepletion: 0.002
                 },
                 rapid: {
-                    complexityA: 0.6, opennessA: 0.9, learningRateA: 0.15, convergenceRateA: 0.08,
-                    complexityB: 0.6, opennessB: 0.9, learningRateB: 0.15, convergenceRateB: 0.08,
+                    complexityA: 0.6, opennessA: 0.9, learningRateA: 0.15, convergenceRateA: 0.08, trustA: 0.7,
+                    complexityB: 0.6, opennessB: 0.9, learningRateB: 0.15, convergenceRateB: 0.08, trustB: 0.7,
                     similarity: 0.3, energyDepletion: 0.004
                 },
                 slow: {
-                    complexityA: 0.5, opennessA: 0.5, learningRateA: 0.02, convergenceRateA: 0.005,
-                    complexityB: 0.5, opennessB: 0.5, learningRateB: 0.02, convergenceRateB: 0.005,
+                    complexityA: 0.5, opennessA: 0.5, learningRateA: 0.02, convergenceRateA: 0.005, trustA: 0.5,
+                    complexityB: 0.5, opennessB: 0.5, learningRateB: 0.02, convergenceRateB: 0.005, trustB: 0.5,
                     similarity: 0.2, energyDepletion: 0.0005
                 },
                 closed: {
-                    complexityA: 0.7, opennessA: 0.1, learningRateA: 0.01, convergenceRateA: 0.001,
-                    complexityB: 0.7, opennessB: 0.1, learningRateB: 0.01, convergenceRateB: 0.001,
+                    complexityA: 0.7, opennessA: 0.1, learningRateA: 0.01, convergenceRateA: 0.001, trustA: 0.2,
+                    complexityB: 0.7, opennessB: 0.1, learningRateB: 0.01, convergenceRateB: 0.001, trustB: 0.2,
                     similarity: 0.05, energyDepletion: 0.002
                 }
             };
