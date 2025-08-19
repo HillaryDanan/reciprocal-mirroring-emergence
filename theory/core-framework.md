@@ -1,34 +1,34 @@
-# Reciprocal Mirroring: Core Theoretical Framework
+# Reciprocal Mirroring: Theoretical Framework
 
-## Executive Summary
+## Summary
 
-Consciousness emerges from bidirectional, simultaneous mirroring between agents, creating shared understanding through iterative choice points where both agents decide whether to continue engaging despite increasing complexity.
+Mutual understanding emerges from bidirectional, simultaneous mirroring between agents, with iterative choice points determining engagement depth.
 
-## The Core Mechanism
+## Core Mechanism
 
-When Agent A observes Agent B performing (singing, thinking, creating), A doesn't just passively observe - A internally simulates B's experience. Simultaneously, B is mirroring A's observation quality, creating a feedback loop of deepening understanding.
+When Agent A observes Agent B, A internally simulates B's experience. Simultaneously, B mirrors A's observation quality, creating feedback loops.
 
 ## Four-Phase Structure
 
 ### Phase 1: Initial Contact
 - Surface-level mirror activation
-- "I could do that" assessment
+- Initial assessment
 - Low neural recruitment
 
 ### Phase 2: Deep Simulation Attempt  
-- Agent attempts full simulation
-- Discovers hidden complexity
-- Neural recruitment expands
+- Full simulation attempt
+- Complexity discovery
+- Neural recruitment expansion
 
 ### Phase 3: Complexity Recognition
-- Realizes multi-dimensional landscape
-- Respect develops through effort
-- Cross-brain coupling strengthens
+- Multi-dimensional landscape recognition
+- Increased effort investment
+- Cross-brain coupling strengthening
 
 ### Phase 4: Choice Point
-- Decision: Continue mirroring or disengage
-- Continued mirroring → Deeper intersubjectivity
-- Creates shared consciousness space
+- Continue or disengage decision
+- Continued mirroring increases intersubjectivity
+- Shared space creation
 
 ## Mathematical Formalization
 
@@ -36,8 +36,8 @@ When Agent A observes Agent B performing (singing, thinking, creating), A doesn'
 S(t) = C_A(t) ∩ C_B(t) × min(U(A,B,t), U(B,A,t))
 
 Where:
-- S(t) = Shared consciousness space at time t
-- C_X(t) = Agent X's consciousness state
+- S(t) = Shared space at time t
+- C_X(t) = Agent X's state
 - U(X,Y,t) = X's understanding of Y at time t
 ```
 
@@ -53,13 +53,10 @@ Where:
 1. Inter-brain synchrony shows discrete phase transitions
 2. Choice points have measurable neural signatures
 3. Asymmetric understanding leads to unstable dynamics
-4. Resonance states show gamma-band hypersynchrony
+4. High-synchrony states show gamma-band coupling
 
 ## Applications
 
 - Clinical interventions for social cognition
-- AI system design for deeper human connection
-- Educational frameworks for empathy development
-
----
-*For full details, see accompanying research documents*
+- AI system design
+- Educational assessment methods
