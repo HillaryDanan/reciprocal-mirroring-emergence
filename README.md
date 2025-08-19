@@ -1,6 +1,6 @@
 <div align="center">
   
-# Reciprocal Mirroring Emergence
+## Reciprocal Mirroring Emergence
 
 ### [🎮 **PLAY WITH LIVE DEMO** 🎮](https://hillarydanan.github.io/reciprocal-mirroring-emergence/interactive.html)
 
