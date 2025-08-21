@@ -283,26 +283,26 @@
     <header>
         <div class="container">
         <!-- Quick Stats Bar -->
-        <div style="background: #0066cc; color: white; padding: 12px 20px; margin: -15px -15px 15px -15px; display: flex; justify-content: space-around; flex-wrap: wrap;">
-            <div style="text-align: center; padding: 5px;">
-                <div style="font-size: 22px; font-weight: bold;">160M</div>
-                <div style="font-size: 10px; opacity: 0.9; text-transform: uppercase; letter-spacing: 0.5px;">In Shortage Areas</div>
+        <div style="background: #0066cc; color: white; padding: 10px 15px; margin: -10px -10px 10px -10px; display: flex; justify-content: space-around; flex-wrap: wrap;">
+            <div style="text-align: center; padding: 3px;">
+                <div style="font-size: 20px; font-weight: bold;">160M</div>
+                <div style="font-size: 9px; opacity: 0.9; text-transform: uppercase; letter-spacing: 0.5px;">In Shortage Areas</div>
             </div>
-            <div style="text-align: center; padding: 5px;">
-                <div style="font-size: 22px; font-weight: bold;">74%</div>
-                <div style="font-size: 10px; opacity: 0.9; text-transform: uppercase; letter-spacing: 0.5px;">Cannot Access Care</div>
+            <div style="text-align: center; padding: 3px;">
+                <div style="font-size: 20px; font-weight: bold;">74%</div>
+                <div style="font-size: 9px; opacity: 0.9; text-transform: uppercase; letter-spacing: 0.5px;">Cannot Access Care</div>
             </div>
-            <div style="text-align: center; padding: 5px;">
-                <div style="font-size: 22px; font-weight: bold;">48 days</div>
-                <div style="font-size: 10px; opacity: 0.9; text-transform: uppercase; letter-spacing: 0.5px;">Average Wait</div>
+            <div style="text-align: center; padding: 3px;">
+                <div style="font-size: 20px; font-weight: bold;">48 days</div>
+                <div style="font-size: 9px; opacity: 0.9; text-transform: uppercase; letter-spacing: 0.5px;">Average Wait</div>
             </div>
-            <div style="text-align: center; padding: 5px;">
-                <div style="font-size: 22px; font-weight: bold;">$154B</div>
-                <div style="font-size: 10px; opacity: 0.9; text-transform: uppercase; letter-spacing: 0.5px;">Annual Cost</div>
+            <div style="text-align: center; padding: 3px;">
+                <div style="font-size: 20px; font-weight: bold;">$154B</div>
+                <div style="font-size: 9px; opacity: 0.9; text-transform: uppercase; letter-spacing: 0.5px;">Annual Cost</div>
             </div>
-            <div style="text-align: center; padding: 5px;">
-                <div style="font-size: 22px; font-weight: bold;">61%</div>
-                <div style="font-size: 10px; opacity: 0.9; text-transform: uppercase; letter-spacing: 0.5px;">Youth Lonely</div>
+            <div style="text-align: center; padding: 3px;">
+                <div style="font-size: 20px; font-weight: bold;">61%</div>
+                <div style="font-size: 9px; opacity: 0.9; text-transform: uppercase; letter-spacing: 0.5px;">Youth Lonely</div>
             </div>
         </div>
             <h1>Mental Health Access and Social Connection in the United States</h1>
@@ -316,36 +316,36 @@
             
             <div class="data-grid">
                 <div class="data-card">
-                    <div class="data-label">Population in Shortage Areas</div>
+                    <div class="data-label">Shortage Areas</div>
                     <div class="data-value">160M</div>
                     <div class="data-source">HRSA, 2023</div>
                 </div>
                 <div class="data-card">
-                    <div class="data-label">Average Wait Time</div>
-                    <div class="data-value">48 days</div>
-                    <div class="data-source">Merritt Hawkins, 2022</div>
+                    <div class="data-label">Wait Time</div>
+                    <div class="data-value">48d</div>
+                    <div class="data-source">Average</div>
                 </div>
                 <div class="data-card">
-                    <div class="data-label">Unable to Access Care</div>
+                    <div class="data-label">No Access</div>
                     <div class="data-value">74%</div>
                     <div class="data-source">APA, 2024</div>
                 </div>
                 <div class="data-card">
-                    <div class="data-label">Insurance Coverage Gap</div>
+                    <div class="data-label">Coverage Gap</div>
                     <div class="data-value">77%</div>
-                    <div class="data-source">Without adequate MH coverage</div>
+                    <div class="data-source">No MH coverage</div>
                 </div>
             </div>
             
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 15px;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 10px;">
                 <div>
-                    <div class="chart-container" style="height: 250px;">
+                    <div class="chart-container">
                         <canvas id="accessChart"></canvas>
                     </div>
                 </div>
                 <div>
                     <div class="methodology">
-                        <strong>Data Sources:</strong> Health Resources and Services Administration (HRSA) Health Professional Shortage Areas database, American Psychological Association 2024 stress survey (n=3,185), Merritt Hawkins physician wait time study covering 15 major metropolitan areas and 15 mid-sized markets.
+                        <strong>Data Sources:</strong> HRSA Health Professional Shortage Areas database, APA 2024 stress survey (n=3,185), Merritt Hawkins physician wait time study (30 metropolitan areas).
                     </div>
                     <table class="data-table">
                         <tr>
@@ -376,32 +376,32 @@
         <section class="section">
             <h2 class="section-title">Cost Analysis: Mental Health Services vs. Digital Alternatives</h2>
             
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 10px;">
                 <div>
                     <table class="comparison-table">
                         <thead>
                             <tr>
                                 <th>Service Type</th>
-                                <th>Monthly Cost</th>
-                                <th>Annual Cost</th>
-                                <th>Wait Time</th>
+                                <th>Monthly</th>
+                                <th>Annual</th>
+                                <th>Wait</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td>Traditional Therapy (Weekly)</td>
+                                <td>Traditional Therapy</td>
                                 <td>$600-800</td>
                                 <td>$7,200-9,600</td>
-                                <td>48 days avg</td>
+                                <td>48 days</td>
                             </tr>
                             <tr class="highlight-row">
-                                <td>Digital Support Services</td>
+                                <td>Digital Support</td>
                                 <td>$20</td>
                                 <td>$240</td>
                                 <td>Immediate</td>
                             </tr>
                             <tr>
-                                <td>Insurance Copay (if covered)</td>
+                                <td>Insurance Copay</td>
                                 <td>$120-200</td>
                                 <td>$1,440-2,400</td>
                                 <td>Varies</td>
@@ -409,39 +409,39 @@
                         </tbody>
                     </table>
                     
-                    <div class="context-note" style="margin-top: 15px;">
-                        <strong>Note:</strong> Digital services are not a replacement for professional mental health treatment when clinically indicated.
+                    <div class="context-note" style="margin-top: 8px;">
+                        <strong>Note:</strong> Digital services supplement but do not replace clinical treatment when indicated.
                     </div>
                 </div>
                 
                 <div>
                     <!-- Visual Cost Comparison -->
-                    <div style="background: #f8f9fa; border: 1px solid #dee2e6; padding: 20px; border-radius: 4px;">
-                        <h4 style="font-size: 14px; margin-bottom: 15px; color: #333;">Annual Cost Comparison</h4>
-                        <div style="position: relative; height: 140px; margin-bottom: 15px;">
+                    <div style="background: #f8f9fa; border: 1px solid #dee2e6; padding: 12px; border-radius: 4px;">
+                        <h4 style="font-size: 12px; margin-bottom: 8px; color: #333;">Annual Cost Comparison</h4>
+                        <div style="position: relative; height: 90px; margin-bottom: 8px;">
                             <div style="position: absolute; bottom: 0; left: 0; width: 48%; background: linear-gradient(to top, #8b0000, #c62828); display: flex; align-items: flex-end; justify-content: center; color: white; font-weight: bold; height: 100%; border-radius: 4px 4px 0 0;">
-                                <div style="text-align: center; margin-bottom: 10px;">
-                                    <div style="font-size: 28px;">$7,800</div>
-                                    <div style="font-size: 11px; opacity: 0.9;">THERAPY</div>
+                                <div style="text-align: center; margin-bottom: 6px;">
+                                    <div style="font-size: 22px;">$7,800</div>
+                                    <div style="font-size: 9px; opacity: 0.9;">THERAPY</div>
                                 </div>
                             </div>
-                            <div style="position: absolute; bottom: 0; right: 0; width: 48%; background: linear-gradient(to top, #004080, #0066cc); display: flex; align-items: flex-end; justify-content: center; color: white; font-weight: bold; height: 4px; border-radius: 4px 4px 0 0;">
-                                <div style="position: absolute; bottom: 12px; text-align: center;">
-                                    <div style="font-size: 16px;">$240</div>
-                                    <div style="font-size: 10px; opacity: 0.9;">DIGITAL</div>
+                            <div style="position: absolute; bottom: 0; right: 0; width: 48%; background: linear-gradient(to top, #004080, #0066cc); display: flex; align-items: flex-end; justify-content: center; color: white; font-weight: bold; height: 3px; border-radius: 4px 4px 0 0;">
+                                <div style="position: absolute; bottom: 8px; text-align: center;">
+                                    <div style="font-size: 13px;">$240</div>
+                                    <div style="font-size: 8px; opacity: 0.9;">DIGITAL</div>
                                 </div>
                             </div>
                         </div>
-                        <div style="text-align: center; padding: 12px; background: linear-gradient(135deg, #fff9e6, #fff3cd); border: 2px solid #ffc107; margin-top: 10px; border-radius: 4px;">
-                            <div style="font-size: 36px; font-weight: bold; color: #d84315;">32.5×</div>
-                            <div style="font-size: 11px; color: #666; text-transform: uppercase; letter-spacing: 1px;">Cost Difference</div>
+                        <div style="text-align: center; padding: 8px; background: linear-gradient(135deg, #fff9e6, #fff3cd); border: 2px solid #ffc107; border-radius: 4px;">
+                            <div style="font-size: 24px; font-weight: bold; color: #d84315;">32.5×</div>
+                            <div style="font-size: 9px; color: #666; text-transform: uppercase; letter-spacing: 0.5px;">Cost Difference</div>
                         </div>
-                        <div style="margin-top: 10px; padding: 8px; background: #e3f2fd; border-left: 3px solid #0066cc; font-size: 12px; color: #333;">
-                            For the cost of <strong>one therapy session</strong>, an individual could access digital support for <strong>7.5 months</strong>.
+                        <div style="margin-top: 6px; padding: 5px; background: #e3f2fd; border-left: 3px solid #0066cc; font-size: 10px; color: #333;">
+                            One session = 7.5 months digital support
                         </div>
                     </div>
                     
-                    <div class="chart-container" style="height: 180px; margin-top: 15px;">
+                    <div class="chart-container" style="height: 140px; margin-top: 10px;">
                         <canvas id="costChart"></canvas>
                     </div>
                 </div>
@@ -452,11 +452,11 @@
             <h2 class="section-title">Geographic Distribution of Mental Health Professional Shortage Areas</h2>
             
             <!-- US Map Visualization -->
-            <div style="background: #2c3e50; padding: 20px; border-radius: 4px; margin-bottom: 20px;">
-                <div style="color: white; text-align: center; margin-bottom: 15px; font-size: 14px;">
+            <div style="background: #2c3e50; padding: 12px; border-radius: 4px; margin-bottom: 10px;">
+                <div style="color: white; text-align: center; margin-bottom: 10px; font-size: 13px; font-weight: 600;">
                     Mental Health Professional Shortage Areas by State
                 </div>
-                <svg viewBox="0 0 960 500" style="width: 100%; height: auto;">
+                <svg viewBox="0 0 960 450" style="width: 100%; height: auto; max-height: 250px;">
                     <!-- Simplified US Map -->
                     <rect x="50" y="50" width="60" height="40" fill="#c62828" opacity="0.9"/><!-- WA -->
                     <rect x="50" y="95" width="60" height="40" fill="#ef6c00" opacity="0.9"/><!-- OR -->
@@ -507,29 +507,79 @@
                     <rect x="50" y="250" width="40" height="30" fill="#c62828" opacity="0.9"/><!-- AK -->
                     <rect x="100" y="250" width="40" height="30" fill="#ef6c00" opacity="0.9"/><!-- HI -->
                 </svg>
-                <div class="map-legend" style="justify-content: center; margin-top: 15px;">
+                    <!-- Simplified US Map -->
+                    <rect x="50" y="50" width="60" height="40" fill="#c62828" opacity="0.9"/><!-- WA -->
+                    <rect x="50" y="95" width="60" height="40" fill="#ef6c00" opacity="0.9"/><!-- OR -->
+                    <rect x="50" y="140" width="60" height="60" fill="#c62828" opacity="0.9"/><!-- CA -->
+                    <rect x="50" y="205" width="60" height="40" fill="#ef6c00" opacity="0.9"/><!-- NV -->
+                    <rect x="115" y="50" width="60" height="40" fill="#c62828" opacity="0.9"/><!-- ID -->
+                    <rect x="115" y="95" width="60" height="40" fill="#c62828" opacity="0.9"/><!-- UT -->
+                    <rect x="115" y="140" width="60" height="60" fill="#c62828" opacity="0.9"/><!-- AZ -->
+                    <rect x="115" y="205" width="60" height="40" fill="#c62828" opacity="0.9"/><!-- NM -->
+                    <rect x="180" y="50" width="60" height="40" fill="#c62828" opacity="0.9"/><!-- MT -->
+                    <rect x="180" y="95" width="60" height="40" fill="#c62828" opacity="0.9"/><!-- WY -->
+                    <rect x="180" y="140" width="60" height="40" fill="#ef6c00" opacity="0.9"/><!-- CO -->
+                    <rect x="245" y="50" width="60" height="40" fill="#c62828" opacity="0.9"/><!-- ND -->
+                    <rect x="245" y="95" width="60" height="40" fill="#c62828" opacity="0.9"/><!-- SD -->
+                    <rect x="245" y="140" width="60" height="40" fill="#ef6c00" opacity="0.9"/><!-- NE -->
+                    <rect x="245" y="185" width="60" height="40" fill="#ef6c00" opacity="0.9"/><!-- KS -->
+                    <rect x="310" y="50" width="60" height="40" fill="#ef6c00" opacity="0.9"/><!-- MN -->
+                    <rect x="310" y="95" width="60" height="40" fill="#ef6c00" opacity="0.9"/><!-- IA -->
+                    <rect x="310" y="140" width="60" height="40" fill="#c62828" opacity="0.9"/><!-- MO -->
+                    <rect x="310" y="185" width="60" height="40" fill="#c62828" opacity="0.9"/><!-- AR -->
+                    <rect x="375" y="50" width="60" height="40" fill="#ef6c00" opacity="0.9"/><!-- WI -->
+                    <rect x="375" y="95" width="60" height="40" fill="#2e7d32" opacity="0.9"/><!-- IL -->
+                    <rect x="375" y="140" width="60" height="40" fill="#c62828" opacity="0.9"/><!-- MS -->
+                    <rect x="375" y="185" width="60" height="40" fill="#c62828" opacity="0.9"/><!-- LA -->
+                    <rect x="440" y="50" width="60" height="40" fill="#ef6c00" opacity="0.9"/><!-- MI -->
+                    <rect x="440" y="95" width="60" height="40" fill="#ef6c00" opacity="0.9"/><!-- IN -->
+                    <rect x="440" y="140" width="60" height="40" fill="#c62828" opacity="0.9"/><!-- KY -->
+                    <rect x="440" y="185" width="60" height="40" fill="#c62828" opacity="0.9"/><!-- TN -->
+                    <rect x="505" y="95" width="60" height="40" fill="#ef6c00" opacity="0.9"/><!-- OH -->
+                    <rect x="505" y="140" width="60" height="40" fill="#c62828" opacity="0.9"/><!-- WV -->
+                    <rect x="505" y="185" width="60" height="40" fill="#ef6c00" opacity="0.9"/><!-- VA -->
+                    <rect x="570" y="95" width="60" height="40" fill="#ef6c00" opacity="0.9"/><!-- PA -->
+                    <rect x="570" y="140" width="60" height="40" fill="#2e7d32" opacity="0.9"/><!-- MD -->
+                    <rect x="570" y="185" width="60" height="40" fill="#ef6c00" opacity="0.9"/><!-- NC -->
+                    <rect x="570" y="230" width="60" height="40" fill="#ef6c00" opacity="0.9"/><!-- SC -->
+                    <rect x="505" y="230" width="60" height="40" fill="#c62828" opacity="0.9"/><!-- GA -->
+                    <rect x="440" y="230" width="60" height="40" fill="#c62828" opacity="0.9"/><!-- AL -->
+                    <rect x="375" y="230" width="60" height="40" fill="#c62828" opacity="0.9"/><!-- FL -->
+                    <rect x="635" y="50" width="50" height="30" fill="#2e7d32" opacity="0.9"/><!-- NY -->
+                    <rect x="690" y="50" width="30" height="20" fill="#2e7d32" opacity="0.9"/><!-- VT -->
+                    <rect x="725" y="50" width="30" height="20" fill="#ef6c00" opacity="0.9"/><!-- NH -->
+                    <rect x="760" y="50" width="40" height="20" fill="#ef6c00" opacity="0.9"/><!-- ME -->
+                    <rect x="690" y="75" width="30" height="20" fill="#2e7d32" opacity="0.9"/><!-- MA -->
+                    <rect x="725" y="75" width="30" height="15" fill="#2e7d32" opacity="0.9"/><!-- CT -->
+                    <rect x="760" y="75" width="25" height="15" fill="#2e7d32" opacity="0.9"/><!-- RI -->
+                    <rect x="635" y="95" width="50" height="30" fill="#2e7d32" opacity="0.9"/><!-- NJ -->
+                    <rect x="180" y="185" width="120" height="60" fill="#c62828" opacity="0.9"/><!-- TX -->
+                    <rect x="50" y="250" width="40" height="30" fill="#c62828" opacity="0.9"/><!-- AK -->
+                    <rect x="100" y="250" width="40" height="30" fill="#ef6c00" opacity="0.9"/><!-- HI -->
+                </svg>
+                <div class="map-legend" style="justify-content: center; margin-top: 10px;">
                     <div class="legend-item" style="color: white;">
                         <div class="legend-color shortage-severe"></div>
-                        <span>Severe Shortage (&gt;50% in shortage area)</span>
+                        <span style="font-size: 11px;">Severe Shortage (&gt;50%)</span>
                     </div>
                     <div class="legend-item" style="color: white;">
                         <div class="legend-color shortage-moderate"></div>
-                        <span>Moderate Shortage (25-50%)</span>
+                        <span style="font-size: 11px;">Moderate (25-50%)</span>
                     </div>
                     <div class="legend-item" style="color: white;">
                         <div class="legend-color coverage-adequate"></div>
-                        <span>Better Coverage (&lt;25%)</span>
+                        <span style="font-size: 11px;">Better (&lt;25%)</span>
                     </div>
                 </div>
             </div>
             
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
                 <div>
-                    <h4 style="font-size: 14px; margin-bottom: 10px; color: #333;">Coverage Distribution</h4>
+                    <h4 style="font-size: 13px; margin-bottom: 8px; color: #333;">Coverage Distribution</h4>
                     <div class="access-grid" id="coverageGrid"></div>
                 </div>
                 <div>
-                    <h4 style="font-size: 14px; margin-bottom: 10px; color: #333;">Key Statistics</h4>
+                    <h4 style="font-size: 13px; margin-bottom: 8px; color: #333;">Key Statistics</h4>
                     <table class="data-table">
                         <tr style="background: #fff3e0;">
                             <td><strong>States with severe shortages</strong></td>
@@ -544,7 +594,7 @@
                             <td>31%</td>
                         </tr>
                         <tr>
-                            <td>Average psychiatrists per 100k population</td>
+                            <td>Psychiatrists per 100k population</td>
                             <td>13.1</td>
                         </tr>
                         <tr>
@@ -557,8 +607,8 @@
                         </tr>
                     </table>
                     
-                    <div class="methodology" style="margin-top: 15px;">
-                        <strong>Source:</strong> HRSA Health Professional Shortage Areas (HPSA) Database, 2023. Severity based on population-to-provider ratios and travel distances.
+                    <div class="methodology" style="margin-top: 10px;">
+                        <strong>Source:</strong> HRSA HPSA Database, 2023. Severity based on population-to-provider ratios.
                     </div>
                 </div>
             </div>
@@ -567,53 +617,53 @@
         <section class="section">
             <h2 class="section-title">Social Connection Metrics: Longitudinal Analysis</h2>
             
-            <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 20px;">
+            <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 15px;">
                 <div>
-                    <div class="chart-container" style="height: 250px;">
+                    <div class="chart-container">
                         <canvas id="isolationChart"></canvas>
                     </div>
                 </div>
                 <div>
-                    <div class="data-grid" style="grid-template-columns: 1fr;">
-                        <div class="data-card" style="background: #ffebee;">
+                    <div class="data-grid" style="grid-template-columns: 1fr; gap: 8px;">
+                        <div class="data-card" style="background: #ffebee; padding: 10px;">
                             <div class="data-label">No Close Friends</div>
-                            <div class="data-value" style="color: #c62828;">12%</div>
-                            <div class="data-source">4× increase since 1990</div>
+                            <div class="data-value" style="color: #c62828; font-size: 24px;">12%</div>
+                            <div class="data-source">4× increase from 1990</div>
                         </div>
-                        <div class="data-card" style="background: #e3f2fd;">
+                        <div class="data-card" style="background: #e3f2fd; padding: 10px;">
                             <div class="data-label">Youth Loneliness</div>
-                            <div class="data-value" style="color: #0066cc;">61%</div>
+                            <div class="data-value" style="color: #0066cc; font-size: 24px;">61%</div>
                             <div class="data-source">Harvard, 2021</div>
                         </div>
-                        <div class="data-card" style="background: #fff3e0;">
+                        <div class="data-card" style="background: #fff3e0; padding: 10px;">
                             <div class="data-label">Economic Impact</div>
-                            <div class="data-value" style="color: #ef6c00;">$154B</div>
-                            <div class="data-source">Annual employer cost</div>
+                            <div class="data-value" style="color: #ef6c00; font-size: 24px;">$154B</div>
+                            <div class="data-source">Annual cost</div>
                         </div>
                     </div>
                 </div>
             </div>
             
-            <div class="key-finding" style="margin-top: 15px;">
-                <strong>Key Finding:</strong> Social isolation increases premature mortality risk by 29%, comparable to smoking 15 cigarettes daily. The neurobiological response to social rejection activates the same brain regions as physical pain (anterior cingulate cortex and right ventral prefrontal cortex), suggesting social connection is a fundamental biological need rather than merely psychological preference (Eisenberger, 2012; Holt-Lunstad et al., 2015).
+            <div class="key-finding" style="margin-top: 10px;">
+                <strong>Key Finding:</strong> Social isolation increases premature mortality risk by 29%, comparable to smoking 15 cigarettes daily. The neurobiological response to social rejection activates the same brain regions as physical pain (anterior cingulate cortex), suggesting social connection is a fundamental biological need (Eisenberger, 2012; Holt-Lunstad et al., 2015).
             </div>
             
-            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 15px;">
-                <div style="text-align: center; padding: 10px; background: #f8f9fa; border: 1px solid #dee2e6;">
-                    <div style="font-size: 20px; font-weight: bold; color: #333;">5 years</div>
-                    <div style="font-size: 11px; color: #666;">Since average American<br>made new friend</div>
+            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 10px;">
+                <div style="text-align: center; padding: 8px; background: #f8f9fa; border: 1px solid #dee2e6;">
+                    <div style="font-size: 18px; font-weight: bold; color: #333;">5 years</div>
+                    <div style="font-size: 10px; color: #666;">Since avg American<br>made new friend</div>
                 </div>
-                <div style="text-align: center; padding: 10px; background: #f8f9fa; border: 1px solid #dee2e6;">
-                    <div style="font-size: 20px; font-weight: bold; color: #333;">29%</div>
-                    <div style="font-size: 11px; color: #666;">Increased mortality<br>risk from isolation</div>
+                <div style="text-align: center; padding: 8px; background: #f8f9fa; border: 1px solid #dee2e6;">
+                    <div style="font-size: 18px; font-weight: bold; color: #333;">29%</div>
+                    <div style="font-size: 10px; color: #666;">Increased mortality<br>from isolation</div>
                 </div>
-                <div style="text-align: center; padding: 10px; background: #f8f9fa; border: 1px solid #dee2e6;">
-                    <div style="font-size: 20px; font-weight: bold; color: #333;">21%</div>
-                    <div style="font-size: 11px; color: #666;">Reduced work<br>performance</div>
+                <div style="text-align: center; padding: 8px; background: #f8f9fa; border: 1px solid #dee2e6;">
+                    <div style="font-size: 18px; font-weight: bold; color: #333;">21%</div>
+                    <div style="font-size: 10px; color: #666;">Reduced work<br>performance</div>
                 </div>
-                <div style="text-align: center; padding: 10px; background: #f8f9fa; border: 1px solid #dee2e6;">
-                    <div style="font-size: 20px; font-weight: bold; color: #333;">2.8×</div>
-                    <div style="font-size: 11px; color: #666;">Higher healthcare<br>utilization</div>
+                <div style="text-align: center; padding: 8px; background: #f8f9fa; border: 1px solid #dee2e6;">
+                    <div style="font-size: 18px; font-weight: bold; color: #333;">2.8×</div>
+                    <div style="font-size: 10px; color: #666;">Higher healthcare<br>utilization</div>
                 </div>
             </div>
         </section>
@@ -621,22 +671,22 @@
         <section class="section">
             <h2 class="section-title">Context and Implications</h2>
             
-            <p style="margin-bottom: 12px; line-height: 1.6;">
+            <p style="margin-bottom: 8px; line-height: 1.5; font-size: 13px;">
                 The data presented illustrate significant gaps in mental health service accessibility and rising rates of social isolation. When traditional support systems are inaccessible due to geographic, economic, or availability constraints, individuals naturally seek alternative forms of connection and support.
             </p>
             
-            <p style="margin-bottom: 12px; line-height: 1.6;">
+            <p style="margin-bottom: 8px; line-height: 1.5; font-size: 13px;">
                 Research indicates that the human need for social connection is fundamental to psychological and physical health (Baumeister & Leary, 1995). When this need is unmet through traditional channels, seeking connection through available alternatives—including digital platforms—represents adaptive rather than pathological behavior.
             </p>
             
-            <p style="line-height: 1.6;">
+            <p style="line-height: 1.5; font-size: 13px;">
                 Understanding these systemic barriers is essential for developing effective interventions that address root causes rather than symptoms. Solutions require structural changes including expanded mental health infrastructure, reduced economic barriers to care, and destigmatization of all forms of support-seeking behavior.
             </p>
         </section>
         
-        <section class="references">
+        <section class="references" style="padding: 15px;">
             <h3>References</h3>
-            <ul class="reference-list">
+            <ul class="reference-list" style="padding: 0;">
                 <li>American Psychological Association. (2024). <a href="https://www.apa.org/news/press/releases/2024/health-care-access">Stress in America: Health Care Access Report</a></li>
                 <li>Baumeister, R. F., & Leary, M. R. (1995). The need to belong: Desire for interpersonal attachments as a fundamental human motivation. <em>Psychological Bulletin, 117</em>(3), 497-529.</li>
                 <li>Cacioppo, J. T., & Patrick, W. (2008). <em>Loneliness: Human Nature and the Need for Social Connection</em>. W.W. Norton.</li>
@@ -652,8 +702,8 @@
     </div>
     
     <footer>
-        <p>Data visualization created for educational and research purposes. Last updated: August 2025</p>
-        <p>Part of the <a href="https://github.com/HillaryDanan/reciprocal-mirroring-emergence">Reciprocal Mirroring Emergence Framework</a></p>
+        <p style="margin: 8px 0;">Data visualization created for educational and research purposes. Last updated: August 2025</p>
+        <p style="margin: 0;">Part of the <a href="https://github.com/HillaryDanan/reciprocal-mirroring-emergence" style="color: #0066cc;">Reciprocal Mirroring Emergence Framework</a></p>
     </footer>
     
     <script>
@@ -676,9 +726,9 @@
                 plugins: {
                     title: {
                         display: true,
-                        text: 'Mental Health Care Accessibility in the United States',
-                        font: { size: 13, weight: '600' },
-                        padding: 15,
+                        text: 'Mental Health Care Accessibility',
+                        font: { size: 12, weight: '600' },
+                        padding: 10,
                         color: '#333'
                     },
                     legend: { display: false }
@@ -717,9 +767,9 @@
                 plugins: {
                     title: {
                         display: true,
-                        text: 'Comparative Cost Analysis',
-                        font: { size: 13, weight: '600' },
-                        padding: 15,
+                        text: 'Cost Analysis',
+                        font: { size: 12, weight: '600' },
+                        padding: 10,
                         color: '#333'
                     },
                     legend: { display: false }
@@ -766,13 +816,13 @@
                     title: {
                         display: true,
                         text: 'Social Isolation Trends 1990-2024',
-                        font: { size: 13, weight: '600' },
-                        padding: 15,
+                        font: { size: 12, weight: '600' },
+                        padding: 10,
                         color: '#333'
                     },
                     legend: {
                         position: 'bottom',
-                        labels: { boxWidth: 12, padding: 15 }
+                        labels: { boxWidth: 10, padding: 10, font: { size: 11 } }
                     }
                 },
                 scales: {
