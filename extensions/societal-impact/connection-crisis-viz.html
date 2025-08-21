@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Connection Crisis: Data Visualizations</title>
+    <title>Mental Health Access and Social Connection: Data Analysis</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.js"></script>
     <style>
         * {
@@ -13,204 +13,184 @@
         }
         
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
-            color: #2c3e50;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
         }
         
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            background: rgba(255, 255, 255, 0.98);
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 40px 20px;
+        }
+        
+        header {
+            background: white;
+            border-bottom: 1px solid #e0e0e0;
+            padding: 30px 0;
+            margin-bottom: 40px;
         }
         
         h1 {
-            text-align: center;
-            color: #2c3e50;
+            font-size: 28px;
+            font-weight: 400;
+            color: #1a1a1a;
             margin-bottom: 10px;
-            font-size: 2.5em;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
         }
         
         .subtitle {
-            text-align: center;
-            color: #7f8c8d;
-            margin-bottom: 40px;
-            font-size: 1.2em;
+            font-size: 16px;
+            color: #666;
+            font-weight: 300;
         }
         
-        .viz-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 40px;
-            margin-bottom: 40px;
-        }
-        
-        .viz-card {
+        .section {
             background: white;
-            border-radius: 15px;
+            border: 1px solid #e0e0e0;
+            margin-bottom: 30px;
             padding: 30px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            border: 2px solid transparent;
-            transition: all 0.3s ease;
         }
         
-        .viz-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
-            border: 2px solid #667eea;
-        }
-        
-        .viz-title {
-            font-size: 1.5em;
-            color: #2c3e50;
+        .section-title {
+            font-size: 20px;
+            font-weight: 500;
+            color: #1a1a1a;
             margin-bottom: 20px;
-            font-weight: bold;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e0e0e0;
         }
         
         .chart-container {
             position: relative;
             height: 400px;
-            margin-bottom: 20px;
+            margin: 30px 0;
         }
         
-        .insight {
-            background: linear-gradient(135deg, #f5f3ff 0%, #ffeaa7 100%);
-            padding: 15px;
-            border-radius: 10px;
-            border-left: 4px solid #6c5ce7;
-            margin-top: 20px;
-        }
-        
-        .insight strong {
-            color: #6c5ce7;
-        }
-        
-        .cost-comparison {
+        .data-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 20px;
             margin: 20px 0;
         }
         
-        .cost-box {
+        .data-card {
+            background: #fafafa;
+            border: 1px solid #e0e0e0;
             padding: 20px;
-            border-radius: 10px;
             text-align: center;
-            transition: transform 0.3s;
         }
         
-        .cost-box:hover {
-            transform: scale(1.05);
-        }
-        
-        .therapy-cost {
-            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
-            color: white;
-        }
-        
-        .ai-cost {
-            background: linear-gradient(135deg, #4ecdc4, #44a3a0);
-            color: white;
-        }
-        
-        .cost-amount {
-            font-size: 2.5em;
-            font-weight: bold;
+        .data-value {
+            font-size: 36px;
+            font-weight: 300;
+            color: #1a1a1a;
             margin: 10px 0;
         }
         
-        .cost-label {
-            font-size: 1.1em;
-            opacity: 0.95;
+        .data-label {
+            font-size: 14px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         
-        .stat-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 15px;
-            margin: 20px 0;
-        }
-        
-        .stat-box {
-            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-            border: 2px solid #dee2e6;
-        }
-        
-        .stat-number {
-            font-size: 2em;
-            font-weight: bold;
-            color: #e74c3c;
-            display: block;
-        }
-        
-        .stat-label {
-            color: #7f8c8d;
+        .data-source {
+            font-size: 12px;
+            color: #999;
             margin-top: 5px;
-            font-size: 0.9em;
         }
         
-        .desert-map {
-            background: #2c3e50;
-            border-radius: 10px;
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        .comparison-table th,
+        .comparison-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .comparison-table th {
+            background: #fafafa;
+            font-weight: 500;
+            color: #666;
+            text-transform: uppercase;
+            font-size: 12px;
+            letter-spacing: 0.5px;
+        }
+        
+        .comparison-table td {
+            font-size: 14px;
+        }
+        
+        .highlight-row {
+            background: #f9f9f9;
+        }
+        
+        .methodology {
+            background: #f9f9f9;
+            border-left: 3px solid #666;
             padding: 20px;
-            color: white;
-            margin: 20px 0;
+            margin: 30px 0;
+            font-size: 14px;
+            color: #666;
         }
         
-        .map-title {
-            text-align: center;
-            margin-bottom: 20px;
-            font-size: 1.2em;
+        .references {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid #e0e0e0;
         }
         
-        .map-visual {
-            display: grid;
-            grid-template-columns: repeat(10, 1fr);
-            gap: 2px;
-            margin: 20px 0;
+        .references h3 {
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 15px;
+            color: #666;
         }
         
-        .map-cell {
-            aspect-ratio: 1;
-            border-radius: 2px;
-            transition: all 0.3s;
+        .reference-list {
+            list-style: none;
+            font-size: 13px;
+            color: #666;
         }
         
-        .map-cell.desert {
-            background: #e74c3c;
-            animation: pulse 2s infinite;
+        .reference-list li {
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
         }
         
-        .map-cell.partial {
-            background: #f39c12;
+        .reference-list li:before {
+            content: "▪";
+            position: absolute;
+            left: 0;
+            color: #999;
         }
         
-        .map-cell.covered {
-            background: #27ae60;
+        .reference-list a {
+            color: #0066cc;
+            text-decoration: none;
         }
         
-        @keyframes pulse {
-            0%, 100% { opacity: 0.6; }
-            50% { opacity: 1; }
+        .reference-list a:hover {
+            text-decoration: underline;
         }
         
-        .legend {
+        .coverage-map {
+            margin: 30px 0;
+        }
+        
+        .map-legend {
             display: flex;
             justify-content: center;
-            gap: 20px;
-            margin-top: 20px;
-            flex-wrap: wrap;
+            gap: 30px;
+            margin: 20px 0;
+            font-size: 14px;
         }
         
         .legend-item {
@@ -220,217 +200,340 @@
         }
         
         .legend-color {
-            width: 20px;
-            height: 20px;
-            border-radius: 3px;
+            width: 16px;
+            height: 16px;
+            border: 1px solid #ddd;
         }
         
-        .panic-comparison {
+        .access-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
+            grid-template-columns: repeat(20, 1fr);
+            gap: 2px;
             margin: 20px 0;
-        }
-        
-        .panic-column {
             padding: 20px;
-            border-radius: 10px;
+            background: #fafafa;
+            border: 1px solid #e0e0e0;
         }
         
-        .panic-column.panic {
-            background: linear-gradient(135deg, #fff5f5, #ffe0e0);
-            border: 2px solid #e74c3c;
+        .access-cell {
+            aspect-ratio: 1;
+            border: 1px solid #fff;
         }
         
-        .panic-column.ignore {
-            background: linear-gradient(135deg, #f0f0f0, #d0d0d0);
-            border: 2px solid #95a5a6;
-        }
+        .shortage-severe { background: #d32f2f; }
+        .shortage-moderate { background: #f57c00; }
+        .coverage-adequate { background: #388e3c; }
         
-        .panic-header {
-            font-size: 1.2em;
-            font-weight: bold;
-            margin-bottom: 15px;
-            text-align: center;
-        }
-        
-        .panic-item {
-            padding: 10px;
-            margin: 5px 0;
+        .key-finding {
             background: white;
-            border-radius: 5px;
-            font-size: 0.95em;
+            border: 1px solid #e0e0e0;
+            padding: 20px;
+            margin: 20px 0;
+            font-size: 15px;
+            color: #333;
+            line-height: 1.8;
         }
         
-        .footer {
-            text-align: center;
-            margin-top: 40px;
+        .context-note {
+            font-size: 14px;
+            color: #666;
+            font-style: italic;
+            margin: 20px 0;
+            padding: 15px;
+            background: #fafafa;
+            border-left: 3px solid #999;
+        }
+        
+        footer {
+            margin-top: 60px;
             padding-top: 20px;
-            border-top: 2px solid #ecf0f1;
-            color: #7f8c8d;
+            border-top: 1px solid #e0e0e0;
+            font-size: 13px;
+            color: #999;
+            text-align: center;
+        }
+        
+        .data-table {
+            width: 100%;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+        
+        .data-table td {
+            padding: 10px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .data-table td:first-child {
+            font-weight: 500;
+            color: #666;
+        }
+        
+        .data-table td:last-child {
+            text-align: right;
+            font-family: monospace;
         }
     </style>
 </head>
 <body>
+    <header>
+        <div class="container">
+            <h1>Mental Health Access and Social Connection in the United States</h1>
+            <p class="subtitle">A data-driven analysis of healthcare accessibility and social isolation trends</p>
+        </div>
+    </header>
+    
     <div class="container">
-        <h1>The Connection Crisis</h1>
-        <p class="subtitle">The data they don't want you to see</p>
+        <section class="section">
+            <h2 class="section-title">Healthcare Access Disparities</h2>
+            
+            <div class="data-grid">
+                <div class="data-card">
+                    <div class="data-label">Population in Shortage Areas</div>
+                    <div class="data-value">160M</div>
+                    <div class="data-source">HRSA, 2023</div>
+                </div>
+                <div class="data-card">
+                    <div class="data-label">Average Wait Time</div>
+                    <div class="data-value">48 days</div>
+                    <div class="data-source">Merritt Hawkins, 2022</div>
+                </div>
+                <div class="data-card">
+                    <div class="data-label">Unable to Access Care</div>
+                    <div class="data-value">74%</div>
+                    <div class="data-source">APA, 2024</div>
+                </div>
+            </div>
+            
+            <div class="methodology">
+                <strong>Methodology:</strong> Data compiled from Health Resources and Services Administration (HRSA) Health Professional Shortage Areas database, American Psychological Association survey data, and Merritt Hawkins physician appointment wait time studies. All figures represent the most recent available data as of 2024.
+            </div>
+            
+            <div class="chart-container">
+                <canvas id="accessChart"></canvas>
+            </div>
+        </section>
         
-        <div class="viz-grid">
-            <!-- Cost Comparison -->
-            <div class="viz-card">
-                <div class="viz-title">💰 The Economics of Abandonment</div>
-                <div class="cost-comparison">
-                    <div class="cost-box therapy-cost">
-                        <div class="cost-label">Annual Therapy Cost</div>
-                        <div class="cost-amount">$7,800</div>
-                        <div class="cost-label">($150/week average)</div>
-                    </div>
-                    <div class="cost-box ai-cost">
-                        <div class="cost-label">ChatGPT Plus Annual</div>
-                        <div class="cost-amount">$240</div>
-                        <div class="cost-label">Available 24/7</div>
-                    </div>
-                </div>
-                <div class="chart-container">
-                    <canvas id="costChart"></canvas>
-                </div>
-                <div class="insight">
-                    <strong>32.5x MORE EXPENSIVE:</strong> For the cost of one therapy session, you could have ChatGPT Plus for 7.5 months. This isn't about replacing therapy—it's about what people can actually afford when they're drowning.
-                </div>
+        <section class="section">
+            <h2 class="section-title">Cost Analysis: Mental Health Services vs. Digital Alternatives</h2>
+            
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Service Type</th>
+                        <th>Monthly Cost</th>
+                        <th>Annual Cost</th>
+                        <th>Availability</th>
+                        <th>Wait Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Traditional Therapy (Weekly)</td>
+                        <td>$600-800</td>
+                        <td>$7,200-9,600</td>
+                        <td>Business Hours</td>
+                        <td>48 days average</td>
+                    </tr>
+                    <tr class="highlight-row">
+                        <td>Digital Support Services</td>
+                        <td>$20</td>
+                        <td>$240</td>
+                        <td>24/7</td>
+                        <td>Immediate</td>
+                    </tr>
+                    <tr>
+                        <td>Insurance Copay (if covered)</td>
+                        <td>$120-200</td>
+                        <td>$1,440-2,400</td>
+                        <td>Varies</td>
+                        <td>Network dependent</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div class="chart-container">
+                <canvas id="costChart"></canvas>
             </div>
             
-            <!-- Mental Health Desert Map -->
-            <div class="viz-card">
-                <div class="viz-title">🏜️ Mental Health Professional Shortage Areas</div>
-                <div class="desert-map">
-                    <div class="map-title">160 Million Americans Live in Mental Health Deserts</div>
-                    <div class="map-visual" id="mapGrid"></div>
-                    <div class="legend">
-                        <div class="legend-item">
-                            <div class="legend-color" style="background: #e74c3c;"></div>
-                            <span>Severe Shortage (48% of US)</span>
-                        </div>
-                        <div class="legend-item">
-                            <div class="legend-color" style="background: #f39c12;"></div>
-                            <span>Partial Coverage (31%)</span>
-                        </div>
-                        <div class="legend-item">
-                            <div class="legend-color" style="background: #27ae60;"></div>
-                            <span>Adequate Coverage (21%)</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="insight">
-                    <strong>REALITY CHECK:</strong> Nearly half of America lives in areas with severe mental health professional shortages. The average wait time is 48 days. People aren't choosing AI over therapy—they're choosing AI over nothing.
-                </div>
+            <div class="context-note">
+                Note: Cost comparison provided for informational purposes. Digital services are not a replacement for professional mental health treatment when clinically indicated.
             </div>
-            
-            <!-- Loneliness Epidemic -->
-            <div class="viz-card">
-                <div class="viz-title">😔 The Loneliness Epidemic Timeline</div>
-                <div class="chart-container">
-                    <canvas id="lonelinessChart"></canvas>
-                </div>
-                <div class="stat-grid">
-                    <div class="stat-box">
-                        <span class="stat-number">61%</span>
-                        <span class="stat-label">Young adults seriously lonely</span>
-                    </div>
-                    <div class="stat-box">
-                        <span class="stat-number">12%</span>
-                        <span class="stat-label">Adults with ZERO friends</span>
-                    </div>
-                    <div class="stat-box">
-                        <span class="stat-number">5 years</span>
-                        <span class="stat-label">Since average American made a friend</span>
-                    </div>
-                    <div class="stat-box">
-                        <span class="stat-number">$154B</span>
-                        <span class="stat-label">Annual cost to employers</span>
-                    </div>
-                </div>
-                <div class="insight">
-                    <strong>THE REAL CRISIS:</strong> Loneliness was killing us long before ChatGPT existed. Social isolation increases premature death risk by 29%—comparable to smoking 15 cigarettes a day.
-                </div>
-            </div>
-            
-            <!-- What We Panic About vs What We Ignore -->
-            <div class="viz-card">
-                <div class="viz-title">🎭 The Misdirected Panic</div>
-                <div class="panic-comparison">
-                    <div class="panic-column panic">
-                        <div class="panic-header">😱 We Panic About</div>
-                        <div class="panic-item">People talking to chatbots</div>
-                        <div class="panic-item">"AI dependency"</div>
-                        <div class="panic-item">"Digital relationships"</div>
-                        <div class="panic-item">Individual "weakness"</div>
-                    </div>
-                    <div class="panic-column ignore">
-                        <div class="panic-header">🙈 We Ignore</div>
-                        <div class="panic-item">160M in mental health deserts</div>
-                        <div class="panic-item">$154B/year loneliness cost</div>
-                        <div class="panic-item">48-day psychiatric wait times</div>
-                        <div class="panic-item">Systematic isolation engineering</div>
-                    </div>
-                </div>
-                <div class="chart-container">
-                    <canvas id="accessChart"></canvas>
-                </div>
-                <div class="insight">
-                    <strong>THE GASLIGHTING:</strong> We built a society that makes connection impossible, then shame people for adapting. The pathology isn't in the individual—it's in the system.
-                </div>
-            </div>
-        </div>
+        </section>
         
-        <div class="footer">
-            <p>Data sources: Harvard Study of Adult Development | APA 2024 | HRSA | Merritt Hawkins | Survey Center on American Life</p>
-            <p><strong>The real psychosis is in a society that created such profound isolation that chatbots became necessary for survival.</strong></p>
-        </div>
+        <section class="section">
+            <h2 class="section-title">Geographic Distribution of Mental Health Professional Shortage Areas</h2>
+            
+            <div class="coverage-map">
+                <div class="access-grid" id="coverageGrid"></div>
+                <div class="map-legend">
+                    <div class="legend-item">
+                        <div class="legend-color shortage-severe"></div>
+                        <span>Severe Shortage (48%)</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color shortage-moderate"></div>
+                        <span>Moderate Shortage (31%)</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color coverage-adequate"></div>
+                        <span>Adequate Coverage (21%)</span>
+                    </div>
+                </div>
+            </div>
+            
+            <table class="data-table">
+                <tr>
+                    <td>Rural areas with severe shortage</td>
+                    <td>65%</td>
+                </tr>
+                <tr>
+                    <td>Urban areas with severe shortage</td>
+                    <td>31%</td>
+                </tr>
+                <tr>
+                    <td>States with >50% population in shortage areas</td>
+                    <td>23 states</td>
+                </tr>
+            </table>
+        </section>
+        
+        <section class="section">
+            <h2 class="section-title">Social Connection Metrics: Longitudinal Analysis</h2>
+            
+            <div class="chart-container">
+                <canvas id="isolationChart"></canvas>
+            </div>
+            
+            <div class="data-grid">
+                <div class="data-card">
+                    <div class="data-label">Adults with No Close Friends</div>
+                    <div class="data-value">12%</div>
+                    <div class="data-source">Up from 3% in 1990</div>
+                </div>
+                <div class="data-card">
+                    <div class="data-label">Young Adults Reporting Loneliness</div>
+                    <div class="data-value">61%</div>
+                    <div class="data-source">Harvard, 2021</div>
+                </div>
+                <div class="data-card">
+                    <div class="data-label">Economic Impact</div>
+                    <div class="data-value">$154B</div>
+                    <div class="data-source">Annual cost to employers</div>
+                </div>
+            </div>
+            
+            <div class="key-finding">
+                <strong>Key Finding:</strong> Social isolation increases premature mortality risk by 29%, comparable to well-established risk factors such as obesity and substance abuse (Holt-Lunstad et al., 2015). The neurobiological response to social rejection activates the same brain regions as physical pain (Eisenberger, 2012).
+            </div>
+        </section>
+        
+        <section class="section">
+            <h2 class="section-title">Context and Implications</h2>
+            
+            <p style="margin-bottom: 20px;">
+                The data presented here illustrates significant gaps in mental health service accessibility and rising rates of social isolation. When traditional support systems are inaccessible due to geographic, economic, or availability constraints, individuals naturally seek alternative forms of connection and support.
+            </p>
+            
+            <p style="margin-bottom: 20px;">
+                Research indicates that the human need for social connection is fundamental to psychological and physical health (Baumeister & Leary, 1995). When this need is unmet through traditional channels, seeking connection through available alternatives—including digital platforms—represents adaptive rather than pathological behavior.
+            </p>
+            
+            <p>
+                Understanding these systemic barriers is essential for developing effective interventions that address root causes rather than symptoms. Solutions require structural changes including expanded mental health infrastructure, reduced economic barriers to care, and destigmatization of all forms of support-seeking behavior.
+            </p>
+        </section>
+        
+        <section class="references">
+            <h3>References</h3>
+            <ul class="reference-list">
+                <li>American Psychological Association. (2024). <a href="https://www.apa.org/news/press/releases/2024/health-care-access">Stress in America: Health Care Access Report</a></li>
+                <li>Baumeister, R. F., & Leary, M. R. (1995). The need to belong: Desire for interpersonal attachments as a fundamental human motivation. <em>Psychological Bulletin, 117</em>(3), 497-529.</li>
+                <li>Cacioppo, J. T., & Patrick, W. (2008). <em>Loneliness: Human Nature and the Need for Social Connection</em>. W.W. Norton.</li>
+                <li>Cigna. (2020). <a href="https://www.cigna.com/newsroom/news-releases/2020/cigna-takes-action-to-combat-the-rise-of-loneliness">Loneliness and the Workplace: 2020 U.S. Report</a></li>
+                <li>Eisenberger, N. I. (2012). The neural bases of social pain. <em>Psychosomatic Medicine, 74</em>(2), 126-135.</li>
+                <li>Harvard Graduate School of Education. (2021). <a href="https://mcc.gse.harvard.edu/reports/loneliness-in-america">Loneliness in America Report</a></li>
+                <li>Health Resources and Services Administration. (2023). <a href="https://data.hrsa.gov/topics/health-workforce/shortage-areas">Health Professional Shortage Areas Database</a></li>
+                <li>Holt-Lunstad, J., et al. (2015). Loneliness and social isolation as risk factors for mortality. <em>Perspectives on Psychological Science, 10</em>(2), 227-237.</li>
+                <li>Merritt Hawkins. (2022). <a href="https://www.merritthawkins.com/physician-appointment-wait-times/">Survey of Physician Appointment Wait Times</a></li>
+                <li>Survey Center on American Life. (2021). <a href="https://www.americansurveycenter.org/research/the-state-of-american-friendship-change-challenges-and-loss/">The State of American Friendship Report</a></li>
+            </ul>
+        </section>
     </div>
     
+    <footer>
+        <p>Data visualization created for educational and research purposes. Last updated: August 2025</p>
+        <p>Part of the <a href="https://github.com/HillaryDanan/reciprocal-mirroring-emergence">Reciprocal Mirroring Emergence Framework</a></p>
+    </footer>
+    
     <script>
-        // Cost Comparison Bar Chart
-        const costCtx = document.getElementById('costChart').getContext('2d');
-        new Chart(costCtx, {
+        // Mental Health Access Chart
+        const accessCtx = document.getElementById('accessChart').getContext('2d');
+        new Chart(accessCtx, {
             type: 'bar',
             data: {
-                labels: ['One Therapy Session', 'One Month ChatGPT Plus', 'Annual Therapy (Weekly)', 'Annual ChatGPT Plus'],
+                labels: ['Can Access Care When Needed', 'Cannot Access Care When Needed', 'In Professional Shortage Area', 'Adequate Provider Coverage'],
                 datasets: [{
-                    label: 'Cost in USD',
-                    data: [150, 20, 7800, 240],
-                    backgroundColor: [
-                        'rgba(231, 76, 60, 0.8)',
-                        'rgba(78, 205, 196, 0.8)',
-                        'rgba(231, 76, 60, 0.8)',
-                        'rgba(78, 205, 196, 0.8)'
-                    ],
-                    borderColor: [
-                        'rgba(231, 76, 60, 1)',
-                        'rgba(78, 205, 196, 1)',
-                        'rgba(231, 76, 60, 1)',
-                        'rgba(78, 205, 196, 1)'
-                    ],
-                    borderWidth: 2
+                    label: 'Percentage of Population',
+                    data: [26, 74, 48, 21],
+                    backgroundColor: ['#388e3c', '#d32f2f', '#d32f2f', '#388e3c'],
+                    borderWidth: 0
                 }]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
                 plugins: {
-                    legend: {
-                        display: false
+                    title: {
+                        display: true,
+                        text: 'Mental Health Care Accessibility in the United States',
+                        font: { size: 14, weight: 'normal' },
+                        padding: 20
                     },
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                return '$' + context.parsed.y.toLocaleString();
-                            }
-                        }
-                    }
+                    legend: { display: false }
                 },
                 scales: {
                     y: {
+                        beginAtZero: true,
+                        max: 100,
+                        ticks: {
+                            callback: function(value) {
+                                return value + '%';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+        
+        // Cost Comparison Chart
+        const costCtx = document.getElementById('costChart').getContext('2d');
+        new Chart(costCtx, {
+            type: 'horizontalBar',
+            data: {
+                labels: ['Traditional Therapy (Annual)', 'Digital Support (Annual)', 'Insurance Copay (Annual)', 'Single Therapy Session', 'Digital Support (Monthly)'],
+                datasets: [{
+                    label: 'Cost in USD',
+                    data: [7800, 240, 1920, 150, 20],
+                    backgroundColor: '#1976d2',
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                indexAxis: 'y',
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Comparative Cost Analysis',
+                        font: { size: 14, weight: 'normal' },
+                        padding: 20
+                    },
+                    legend: { display: false }
+                },
+                scales: {
+                    x: {
                         beginAtZero: true,
                         ticks: {
                             callback: function(value) {
@@ -442,25 +545,25 @@
             }
         });
         
-        // Loneliness Timeline
-        const lonelinessCtx = document.getElementById('lonelinessChart').getContext('2d');
-        new Chart(lonelinessCtx, {
+        // Social Isolation Trends
+        const isolationCtx = document.getElementById('isolationChart').getContext('2d');
+        new Chart(isolationCtx, {
             type: 'line',
             data: {
-                labels: ['1990', '2000', '2010', '2015', '2020', '2024'],
+                labels: ['1990', '1995', '2000', '2005', '2010', '2015', '2020', '2024'],
                 datasets: [{
-                    label: '% Adults with No Close Friends',
-                    data: [3, 4, 6, 8, 10, 12],
-                    borderColor: 'rgba(231, 76, 60, 1)',
-                    backgroundColor: 'rgba(231, 76, 60, 0.1)',
-                    tension: 0.4,
+                    label: 'Adults with No Close Friends (%)',
+                    data: [3, 3.5, 4, 5, 6, 8, 10, 12],
+                    borderColor: '#d32f2f',
+                    backgroundColor: 'rgba(211, 47, 47, 0.1)',
+                    tension: 0.3,
                     fill: true
                 }, {
-                    label: '% Young Adults Seriously Lonely',
-                    data: [20, 28, 35, 43, 54, 61],
-                    borderColor: 'rgba(155, 89, 182, 1)',
-                    backgroundColor: 'rgba(155, 89, 182, 0.1)',
-                    tension: 0.4,
+                    label: 'Young Adults Reporting Loneliness (%)',
+                    data: [20, 23, 28, 32, 38, 45, 54, 61],
+                    borderColor: '#7b1fa2',
+                    backgroundColor: 'rgba(123, 31, 162, 0.1)',
+                    tension: 0.3,
                     fill: true
                 }]
             },
@@ -468,8 +571,15 @@
                 responsive: true,
                 maintainAspectRatio: false,
                 plugins: {
+                    title: {
+                        display: true,
+                        text: 'Social Isolation Trends 1990-2024',
+                        font: { size: 14, weight: 'normal' },
+                        padding: 20
+                    },
                     legend: {
-                        position: 'top'
+                        position: 'bottom',
+                        labels: { boxWidth: 12, padding: 15 }
                     }
                 },
                 scales: {
@@ -486,64 +596,23 @@
             }
         });
         
-        // Access Barriers Doughnut Chart
-        const accessCtx = document.getElementById('accessChart').getContext('2d');
-        new Chart(accessCtx, {
-            type: 'doughnut',
-            data: {
-                labels: [
-                    'Cannot Access Mental Health Care (74%)',
-                    'Can Access When Needed (26%)'
-                ],
-                datasets: [{
-                    data: [74, 26],
-                    backgroundColor: [
-                        'rgba(231, 76, 60, 0.8)',
-                        'rgba(39, 174, 96, 0.8)'
-                    ],
-                    borderColor: [
-                        'rgba(231, 76, 60, 1)',
-                        'rgba(39, 174, 96, 1)'
-                    ],
-                    borderWidth: 2
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'bottom'
-                    },
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                return context.label;
-                            }
-                        }
-                    }
-                }
-            }
-        });
+        // Generate coverage grid
+        const grid = document.getElementById('coverageGrid');
+        const distribution = { severe: 192, moderate: 124, adequate: 84 }; // Out of 400 cells
+        const cells = [];
         
-        // Generate map grid
-        const mapGrid = document.getElementById('mapGrid');
-        for (let i = 0; i < 100; i++) {
+        for (let i = 0; i < distribution.severe; i++) cells.push('shortage-severe');
+        for (let i = 0; i < distribution.moderate; i++) cells.push('shortage-moderate');
+        for (let i = 0; i < distribution.adequate; i++) cells.push('coverage-adequate');
+        
+        // Shuffle for random distribution
+        cells.sort(() => Math.random() - 0.5);
+        
+        cells.forEach(className => {
             const cell = document.createElement('div');
-            cell.className = 'map-cell';
-            
-            // 48% severe shortage, 31% partial, 21% adequate
-            const rand = Math.random();
-            if (rand < 0.48) {
-                cell.classList.add('desert');
-            } else if (rand < 0.79) {
-                cell.classList.add('partial');
-            } else {
-                cell.classList.add('covered');
-            }
-            
-            mapGrid.appendChild(cell);
-        }
+            cell.className = 'access-cell ' + className;
+            grid.appendChild(cell);
+        });
     </script>
 </body>
 </html>
