@@ -8,7 +8,7 @@
 
 **Background:** Current theories of consciousness struggle to explain how subjective experience emerges from neural activity. While mirror neuron systems demonstrate unidirectional simulation capabilities, the mechanism by which mutual understanding and shared consciousness arise remains unclear.
 
-**Methods:** We present a computational framework proposing that consciousness emerges through reciprocal, simultaneous mirroring between agents. Using information-theoretic analysis and HONEST statistical validation, we demonstrate that bidirectional mirroring produces qualitatively different dynamics compared to sequential interaction. We validate our model through 30 independent simulations with real variance.
+**Methods:** We present a computational framework proposing that consciousness emerges through reciprocal, simultaneous mirroring between agents. Using information-theoretic analysis and statistical validation, we demonstrate that bidirectional mirroring produces qualitatively different dynamics compared to sequential interaction. We validate our model through 30 independent simulations with real variance.
 
 **Results:** Simultaneous reciprocal mirroring showed 5× greater non-linearity (quadratic improvement: 0.336 vs 0.069) and 1.75× higher acceleration than sequential interaction. R² values were realistic (0.897, not artificial 1.000), showing genuine biological variance. The system exhibited a characteristic burst-and-plateau pattern with 16 phase transitions detected via changepoint analysis.
 
@@ -77,6 +77,4 @@ Rizzolatti, G., & Craighero, L. (2004). The mirror-neuron system. Annual Review 
 
 ---
 
-**Data Availability:** All code including honest validation at: https://github.com/HillaryDanan/reciprocal-mirroring-emergence
-
-**<4577> Real science, real results, real integrity**
+**Data Availability:** All code including validation at: https://github.com/HillaryDanan/reciprocal-mirroring-emergence
