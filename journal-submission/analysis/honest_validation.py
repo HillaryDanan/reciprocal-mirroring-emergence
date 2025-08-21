@@ -1,8 +1,7 @@
 """
 HONEST Validation for Reciprocal Mirroring Framework
-No bullshit, no circular reasoning, actual statistical testing
 Author: Hillary Danan
-Date: January 2025
+Date: August 2025
 
 This runs REAL simulations and measures ACTUAL scaling behavior
 """
