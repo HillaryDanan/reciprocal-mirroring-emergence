@@ -1,0 +1,29 @@
+Dear Editors of Neuroscience of Consciousness,
+
+I am pleased to submit "Reciprocal Mirroring: A Computational Framework for Consciousness Emergence Through Bidirectional Simulation" for consideration at Neuroscience of Consciousness.
+
+This work directly addresses the central question of your journal: how does consciousness emerge? We propose it emerges through reciprocal, simultaneous mirroring between agents—consciousness is fundamentally relational, not computational.
+
+KEY FINDINGS:
+- Simultaneous mirroring shows 5× greater non-linearity than sequential
+- Characteristic "burst-and-plateau" pattern unique to bidirectional processing  
+- Information-theoretic validation with honest statistics (R²=0.897, not fake 1.000)
+- 16 phase transitions detected, suggesting rich metastable dynamics
+
+SCIENTIFIC INTEGRITY:
+We discovered our initial validation was circular (R²=1.000) and completely redid it with honest methods. This transparency strengthens our conclusions.
+
+TESTABLE PREDICTIONS:
+- EEG hyperscanning will show burst-plateau gamma synchrony
+- Phase transitions at understanding thresholds
+- Clinical populations show altered burst-plateau dynamics
+
+All code available at: https://github.com/HillaryDanan/reciprocal-mirroring-emergence
+
+This work offers a mathematically rigorous, empirically testable framework for consciousness as relational emergence—perfectly aligned with your journal's mission.
+
+Sincerely,
+
+Hillary Danan
+
+P.S. We chose your journal over others because you don't charge submission fees and you focus on consciousness itself, not just its neural correlates. <4577>

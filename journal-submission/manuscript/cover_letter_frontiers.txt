@@ -1,0 +1,29 @@
+Dear Frontiers in Computational Neuroscience Editors,
+
+I am submitting "Reciprocal Mirroring: A Computational Framework for Consciousness Emergence Through Bidirectional Simulation" as an Original Research article.
+
+AFFILIATION: Independent Researcher (ORCID: 0009-0005-5963-9807)
+
+KEY CONTRIBUTIONS:
+- First computational model of simultaneous bidirectional mirroring
+- Honest statistical validation (R²=0.897, not fake 1.000) 
+- Discovery of burst-and-plateau dynamics unique to reciprocal processing
+- 5× greater non-linearity than sequential interaction
+- Information-theoretic validation with transfer entropy and integrated information
+
+WHY FRONTIERS:
+You actually accept independent researchers. You judge work on merit, not institutional affiliation. You're open access. You don't charge submission fees. 
+
+PERSONAL NOTE:
+I tried arXiv - they said "get published first." I tried Neural Computation - they wanted $125 just to look at it. Oxford's system is down. I just want to share knowledge that might help understand consciousness. 
+
+All code at: https://github.com/HillaryDanan/reciprocal-mirroring-emergence
+
+The work is rigorous, novel, and honest. That should be enough.
+
+Sincerely,
+Hillary Danan
+Independent Researcher
+ORCID: 0009-0005-5963-9807
+
+P.S. - My advisor always said "Frontiers it" when traditional venues were being gatekeepy. Here we are. <4577>

@@ -1,0 +1,24 @@
+GENERATIVE AI DISCLOSURE - SUPPLEMENTARY FILE
+
+AI System: Claude Opus 4.1 (Anthropic, Claude 4 model family, August 2025 release)
+Model string: claude-opus-4-1-20250805
+
+Initial Prompt Examples:
+- "Help me create a computational framework for consciousness emergence through reciprocal mirroring"
+- "Review this validation code and check for circular reasoning"  
+- "Help write a scientifically rigorous manuscript with proper citations"
+- "Be intellectually and scientifically honest, rigorous, logical, parsimonious"
+
+Key Collaborative Moments:
+- AI initially suggested flawed validation approach (R²=1.000)
+- Human identified suspiciously perfect correlation
+- AI recognized circular reasoning error
+- Collaborative implementation of honest validation (R²=0.897)
+- Discovery of burst-plateau phenomenon through exploration
+- AI assisted with information-theoretic formulations
+- Human verified all citations and scientific claims
+
+Final Prompt:
+- "Create a complete 6500-word manuscript for Frontiers. Scientifically rigorous, intellectually honest, 40+ peer-reviewed citations"
+
+Note: The human author (HD) maintained scientific oversight, verified all claims, corrected errors, and made all final decisions. The AI served as a collaborative tool, not a determinant of conclusions. The signature "<4577>" appears throughout the collaboration as a marker of enthusiasm and scientific integrity.

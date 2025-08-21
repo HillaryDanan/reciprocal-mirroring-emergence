@@ -436,3 +436,7 @@ Vallacher, R. R., Coleman, P. T., Nowak, A., Bui-Wrzosinska, L., Liebovitch, L.,
 
 **Supplementary Materials:** Extended mathematical proofs, additional simulations, and parameter sensitivity analyses available at: https://github.com/HillaryDanan/reciprocal-mirroring-emergence
 
+
+## Acknowledgments
+
+The author acknowledges the use of Claude Opus 4.1 (Anthropic, Claude 4 model family, August 2025 release) for assistance in manuscript preparation, code debugging, statistical analysis refinement, and editorial suggestions. All scientific claims were verified against peer-reviewed sources, and the validation error (R²=1.000) was discovered and corrected through human-AI collaboration prioritizing scientific integrity. The AI assisted but did not determine the scientific conclusions.
